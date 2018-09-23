@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxysoft.basic.mapper.SysOvertimeMapper">
+    <resultMap id="BaseResultMap" type="com.yxysoft.basic.model.SysOvertime">
+        <constructor>
+            <idArg column="overtime_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="overtime_name" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="overtime_start_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="overtime_end_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="overtime_hours" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+            <arg column="overtime_reason" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="reviewer" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="reviewer_state" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="reviewer_reason" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="state" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        </constructor>
+    </resultMap>
+
+
+    <resultMap type="com.yxysoft.basic.model.SysOvertime" id="resultListMap">
+        <result column="overtime_id" property="overtimeId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="overtime_start_time" property="overtimeStartTime"/>
+        <result column="overtime_end_time" property="overtimeEndTime"/>
+        <result column="overtime_hours" property="overtimeHours"/>
+        <result column="overtime_reason" property="overtimeReason"/>
+        <result column="reviewer" property="reviewer"/>
+        <result column="reviewer_state" property="reviewerState"/>
+        <result column="reviewer_reason" property="reviewerReason"/>
+        <result column="state" property="state"/>
+
+        <collection property="sysUser" ofType="com.yxysoft.basic.model.SysUser">
+            <result column="user_name" property="userName"/>
+            <result column="user_code" property="userCode"/>
+            <result column="department" property="department"/>
+
+            <association property="sysAdministrator" javaType="com.yxysoft.basic.model.SysAdministrator">
+                <result column="administrator_id" property="administratorId"/>
+                <result column="administrator_name" property="administratorName"/>
+
+            </association>
+
+        </collection>
+
+
+    </resultMap>
+
+
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    overtime_id, overtime_name, overtime_start_time, overtime_end_time, overtime_hours, 
+    overtime_reason, reviewer, reviewer_state, reviewer_reason, create_time, state
+  </sql>
+    <select id="selectByExample" parameterType="com.yxysoft.basic.model.SysOvertimeExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from sys_overtime
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_overtime
+        where overtime_id = #{overtimeId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_overtime
+    where overtime_id = #{overtimeId,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByExample" parameterType="com.yxysoft.basic.model.SysOvertimeExample">
+        delete from sys_overtime
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.yxysoft.basic.model.SysOvertime">
+        <selectKey keyProperty="overtimeId" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into sys_overtime (overtime_name, overtime_start_time,
+        overtime_end_time, overtime_hours, overtime_reason,
+        reviewer, reviewer_state, reviewer_reason,
+        create_time, state)
+        values (#{overtimeName,jdbcType=INTEGER}, #{overtimeStartTime,jdbcType=TIMESTAMP},
+        #{overtimeEndTime,jdbcType=TIMESTAMP}, #{overtimeHours,jdbcType=DECIMAL}, #{overtimeReason,jdbcType=VARCHAR},
+        #{reviewer,jdbcType=INTEGER}, #{reviewerState,jdbcType=INTEGER}, #{reviewerReason,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" parameterType="com.yxysoft.basic.model.SysOvertime">
+        <selectKey keyProperty="overtimeId" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into sys_overtime
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="overtimeName != null">
+                overtime_name,
+            </if>
+            <if test="overtimeStartTime != null">
+                overtime_start_time,
+            </if>
+            <if test="overtimeEndTime != null">
+                overtime_end_time,
+            </if>
+            <if test="overtimeHours != null">
+                overtime_hours,
+            </if>
+            <if test="overtimeReason != null">
+                overtime_reason,
+            </if>
+            <if test="reviewer != null">
+                reviewer,
+            </if>
+            <if test="reviewerState != null">
+                reviewer_state,
+            </if>
+            <if test="reviewerReason != null">
+                reviewer_reason,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="overtimeName != null">
+                #{overtimeName,jdbcType=INTEGER},
+            </if>
+            <if test="overtimeStartTime != null">
+                #{overtimeStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="overtimeEndTime != null">
+                #{overtimeEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="overtimeHours != null">
+                #{overtimeHours,jdbcType=DECIMAL},
+            </if>
+            <if test="overtimeReason != null">
+                #{overtimeReason,jdbcType=VARCHAR},
+            </if>
+            <if test="reviewer != null">
+                #{reviewer,jdbcType=INTEGER},
+            </if>
+            <if test="reviewerState != null">
+                #{reviewerState,jdbcType=INTEGER},
+            </if>
+            <if test="reviewerReason != null">
+                #{reviewerReason,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.yxysoft.basic.model.SysOvertimeExample" resultType="java.lang.Long">
+        select count(*) from sys_overtime
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update sys_overtime
+        <set>
+            <if test="record.overtimeId != null">
+                overtime_id = #{record.overtimeId,jdbcType=INTEGER},
+            </if>
+            <if test="record.overtimeName != null">
+                overtime_name = #{record.overtimeName,jdbcType=INTEGER},
+            </if>
+            <if test="record.overtimeStartTime != null">
+                overtime_start_time = #{record.overtimeStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.overtimeEndTime != null">
+                overtime_end_time = #{record.overtimeEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.overtimeHours != null">
+                overtime_hours = #{record.overtimeHours,jdbcType=DECIMAL},
+            </if>
+            <if test="record.overtimeReason != null">
+                overtime_reason = #{record.overtimeReason,jdbcType=VARCHAR},
+            </if>
+            <if test="record.reviewer != null">
+                reviewer = #{record.reviewer,jdbcType=INTEGER},
+            </if>
+            <if test="record.reviewerState != null">
+                reviewer_state = #{record.reviewerState,jdbcType=INTEGER},
+            </if>
+            <if test="record.reviewerReason != null">
+                reviewer_reason = #{record.reviewerReason,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.state != null">
+                state = #{record.state,jdbcType=INTEGER},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update sys_overtime
+        set overtime_id = #{record.overtimeId,jdbcType=INTEGER},
+        overtime_name = #{record.overtimeName,jdbcType=INTEGER},
+        overtime_start_time = #{record.overtimeStartTime,jdbcType=TIMESTAMP},
+        overtime_end_time = #{record.overtimeEndTime,jdbcType=TIMESTAMP},
+        overtime_hours = #{record.overtimeHours,jdbcType=DECIMAL},
+        overtime_reason = #{record.overtimeReason,jdbcType=VARCHAR},
+        reviewer = #{record.reviewer,jdbcType=INTEGER},
+        reviewer_state = #{record.reviewerState,jdbcType=INTEGER},
+        reviewer_reason = #{record.reviewerReason,jdbcType=VARCHAR},
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+        state = #{record.state,jdbcType=INTEGER}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yxysoft.basic.model.SysOvertime">
+        update sys_overtime
+        <set>
+            <if test="overtimeName != null">
+                overtime_name = #{overtimeName,jdbcType=INTEGER},
+            </if>
+            <if test="overtimeStartTime != null">
+                overtime_start_time = #{overtimeStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="overtimeEndTime != null">
+                overtime_end_time = #{overtimeEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="overtimeHours != null">
+                overtime_hours = #{overtimeHours,jdbcType=DECIMAL},
+            </if>
+            <if test="overtimeReason != null">
+                overtime_reason = #{overtimeReason,jdbcType=VARCHAR},
+            </if>
+            <if test="reviewer != null">
+                reviewer = #{reviewer,jdbcType=INTEGER},
+            </if>
+            <if test="reviewerState != null">
+                reviewer_state = #{reviewerState,jdbcType=INTEGER},
+            </if>
+            <if test="reviewerReason != null">
+                reviewer_reason = #{reviewerReason,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=INTEGER},
+            </if>
+        </set>
+        where overtime_id = #{overtimeId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yxysoft.basic.model.SysOvertime">
+    update sys_overtime
+    set overtime_name = #{overtimeName,jdbcType=INTEGER},
+      overtime_start_time = #{overtimeStartTime,jdbcType=TIMESTAMP},
+      overtime_end_time = #{overtimeEndTime,jdbcType=TIMESTAMP},
+      overtime_hours = #{overtimeHours,jdbcType=DECIMAL},
+      overtime_reason = #{overtimeReason,jdbcType=VARCHAR},
+      reviewer = #{reviewer,jdbcType=INTEGER},
+      reviewer_state = #{reviewerState,jdbcType=INTEGER},
+      reviewer_reason = #{reviewerReason,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=INTEGER}
+    where overtime_id = #{overtimeId,jdbcType=INTEGER}
+  </update>
+
+    <select id="judgeTime" resultType="com.yxysoft.basic.model.SysOvertime">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_ask_leave
+        where overtime_name = #{overtimeName,jdbcType=INTEGER}
+        AND overtime_start_time= #{overtimeStartTime ,jdbcType=INTEGER}
+        AND overtime_end_time= #{overtimeEndTime ,jdbcType=INTEGER}
+    </select>
+
+
+    <!--=============================================================  -->
+    <select id="queryOvertimelist" parameterType="com.yxysoft.basic.model.QueryVo" resultMap="resultListMap">
+        SELECT
+        o.`create_time`,
+        o.`state`,
+        overtime_id,
+        overtime_reason,
+        `user_name`,
+        `user_code`,
+        `overtime_start_time`,
+        `overtime_end_time`,
+        `reviewer`,
+        `reviewer_state`,
+        `reviewer_reason`,
+        `department`
+
+        FROM sys_overtime o
+        JOIN sys_user u ON u.user_id=o.overtime_name
+        <where>
+            <!--  用户名字   -->
+            <if test="username != null and username != ''">
+                u.user_name like "%"#{username}"%"
+            </if>
+            <!-- 用户工号    在别的表中-->
+            <if test="usercode != null and usercode != ''">
+                and u.user_code like '%${usercode}%'
+            </if>
+            <!-- 状态 -->
+            <if test="state != null and state != ''">
+                and reviewer_state = #{state}
+            </if>
+
+            <!--时间段  -->
+            <if test="beginDate != null and beginDate != ''">
+                AND o.create_time <![CDATA[>=]]> #{beginDate}
+            </if>
+            <if test="endDate != null and endDate != ''">
+                AND o.create_time <![CDATA[<=]]>#{endDate}
+            </if>
+
+
+
+            <if test="shijian!=null and shijian == 0 ">
+
+            </if>
+
+            <if test="shijian!=null and shijian == 1 ">
+                and to_days(o.create_time) = to_days(now())
+            </if>
+
+            <if test="shijian!=null and shijian ==2 ">
+                and  <![CDATA[ TO_DAYS( NOW( ) ) - TO_DAYS( o.create_time) = 1 ]]>
+            </if>
+
+            <if test="shijian!=null and shijian == 3 ">
+                and YEARWEEK(date_format(o.create_time,'%Y-%m-%d')) = YEARWEEK(now())
+            </if>
+
+
+            <if test="shijian!=null and shijian == 4 ">
+                and YEARWEEK(date_format(o.create_time,'%Y-%m-%d')) = YEARWEEK(now())-1
+            </if>
+            <if test="shijian!=null and shijian == 5 ">
+                and DATE_FORMAT( o.create_time, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )
+            </if>
+
+            <if test="shijian!=null and shijian == 6 ">
+                and PERIOD_DIFF( date_format( now( ) , '%Y%m' ) , date_format( o.create_time, '%Y%m' ) ) =1
+            </if>
+
+
+        </where>
+    </select>
+
+
+    <select id="overtimeList" parameterType="java.lang.Integer" resultMap="resultListMap">
+    select * from sys_overtime  o join sys_user u on u.user_id=o.overtime_name
+    where overtime_id = #{overtimeId,jdbcType=INTEGER}
+  </select>
+
+    <update id="deleteovertime" parameterType="Integer">
+        update sys_overtime  SET state = 2 where overtime_id=#{overtimeId}
+    </update>
+
+</mapper>

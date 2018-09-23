@@ -1,0 +1,325 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>栖霞政务不见面后台管理系统-明细查询</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- 基本样式 -->
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="../../static/admin/js/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../static/admin/css/basic_css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../static/admin/css/basic_css/animate.css">
+    <link rel="stylesheet" href="../../static/admin/../../static/admin/css/basic_css/index.css">
+    <link rel="stylesheet" href="../../static/admin/css/basic_css/style.css">
+
+    <!-- 自定义样式 -->
+    <link href="../../static/admin/css/basic_css/public.css" rel="stylesheet">
+    <link href="../../static/admin/css/basic_css/default.css" rel="stylesheet">
+    <link href="../../static/admin/css/basic_css/summary_statistics.css" rel="stylesheet">
+    <!-- 日期控件  href="js/plugins/layui/css/layui.css" -->
+    <link href="../../static/admin/js/layui/css/layui.css" rel="stylesheet">
+    <script src="../../static/admin/js/jquery/jQuery-2.2.0.min.js"></script>
+    <!-- 日期控件  src="js/plugins/layui/layui.js" -->
+
+    <script src="../../static/admin/js/layui/layui.js" type="text/javascript"></script>
+
+    <script src="../../static/admin/js/layer/laydate/laydate.js"></script>
+    <!-- 分页 css href="../../static/admin/css/basic_css/style_paging.css" -->
+    <link href="../../static/admin/css/basic_css/style_paging.css" rel="stylesheet">
+    <!-- 分页 js rc="../../static/admin/js/pagination.min.js"-->
+    <!--<script type="text/javascript" src="../../static/admin/js/pagination.min.js"></script>-->
+    <script type="text/javascript" src="../../static/admin/js/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div id="areascontent" class=" padding_10">
+
+    <div class="row margin_0">
+        <!--  修改 start  -->
+        <div class="box_search_div height_70">
+            <!--  修改 end  -->
+            <!-- 查询选项 -->
+            <div class="box_search_div">
+                <div>
+                    <div class="box_search_div_one" style="width:323px;">
+                        <label class="box_search_lable">员工姓名：</label>
+                        <div class="box_search_input">
+                            <input type="text" class="form-control" placeholder="员工姓名搜索" id="sidOrSname" value="">
+                        </div>
+                    </div>
+                    <div class="box_search_div_one" style="width:355px;">
+                        <label class="box_search_lable">员工工号：</label>
+                        <div class="box_search_input">
+                            <input type="text" class="form-control" placeholder="员工工号搜索" id="udeOrUname" value="">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="box_search_div_one" style="width: 100%; float: left; margin:10px 0;">
+                    <div class="form-group">
+                        <label class="box_search_lable">创建时间：</label>
+                        <div class="col-sm-10" style="padding: 0">
+                            <input placeholder="请输入开始日期" class="form-control layer-date f_l" id="start" value="">
+                            <span class="span_height f_l">&nbsp;&nbsp;-&nbsp;&nbsp;</span>
+                            <input placeholder="结束日期" class="form-control layer-date f_l" id="end" value="">
+
+
+                            <div>
+                                <div class="box_search_div_one" style="width:355px;padding-left:20px">
+
+                                    <label class="box_search_lable">身份证号：</label>
+
+                                    <div class="box_search_input">
+                                        <input type="text" class="form-control" placeholder="身份证号搜索" id="didOrDname"
+                                               value="">
+                                    </div>
+                                </div>
+
+                                <div class="box_search_div_one" style="width:355px;padding-left:20px">
+
+                                    <label class="box_search_lable">电话号码：</label>
+
+                                    <div class="box_search_input">
+                                        <input type="text" class="form-control" placeholder="电话号码搜索" id="telOrDname"
+                                               value="">
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <button type="button" class="btn btn-sm btn-info padding_0416" id="add"
+                                    data-toggle="modal" data-target="#myModal">添加
+                            </button>
+                            <!--  -->
+                            <!--  -->
+                            <button type="button" class="btn btn-sm btn-info padding_0416" id="butCX"
+                                    onclick="funchaxun(1)">搜索
+                            </button>
+                            <!--  -->
+
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+            </div>
+            <!-- 表格 -->
+            <div>
+                <table class="table table-bordered table-striped margin_b20">
+                    <thead>
+                    <tr>
+                        <th>创建时间</th>
+                        <th>员工姓名</th>
+                        <th>员工工号</th>
+                        <th>身份证号</th>
+                        <th>电话号码</th>
+                        <th>状态</th>
+                        <th>所属部门</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbs">
+
+                    </tbody>
+                </table>
+                <div id="Pagination" class="Pagination">
+                    <!-- 这里显示分页 -->
+                </div>
+
+
+                <div id="pagination_4" class="margin_b20" style="text-align: center;"></div>
+                <div>
+                    <!-- 模态框（Modal）添加 -->
+                    <div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="myModalLabel">添加用户补卡信息</h4>
+                                    <a id="uid" type="hidden"></a>
+                                </div>
+                                <div class="modal-body">
+
+                                    <div style="padding: 10px 10px 10px;">
+                                        <div class="input-group input-group-sm"
+                                             style="padding: 5px 5px 5px;margin:5px 5px 5px ">
+                                            <span class="input-group-addon">员工姓名</span>
+                                            <input type="text" class="form-control" maxlength="6" value="" id="uName">
+
+                                            <span class="input-group-addon">员工工号</span>
+                                            <input type="text" class="form-control" maxlength="3"  placeholder="" value="" id="aTime">
+                                        </div>
+
+                                        <div class="input-group input-group-sm"
+                                             style="padding: 5px 5px 5px;margin:5px 5px 5px ">
+                                            <span class="input-group-addon">身份证号</span>
+                                            <input type="text" class="form-control" placeholder="" value="" id="dName"/>
+
+                                            <span class="input-group-addon">电话号码</span>
+                                            <input type="text" class="form-control" placeholder="" value="" id="sName"/>
+                                        </div>
+                                        <!-- 1 -->
+                                        <div class="input-group input-group-sm" id="inx_two"
+                                             style="padding: 5px 5px 5px;margin:5px 5px 5px ">
+                                            <span class="input-group-addon">员工所属部门</span>
+                                            <input type="text" class="form-control" maxlength="5" placeholder="" value="" id="mobile">
+
+                                            <!--<span class="input-group-addon" >邮寄地址</span>-->
+                                            <!--<input type="text" class="form-control" placeholder="" value="" readonly id="dzOrsj">-->
+                                        </div>
+                                        <!--<div class="input-group input-group-sm" style="padding: 5px 5px 5px;margin:5px 5px 5px ">-->
+                                        <!--<span class="input-group-addon" >快递公司</span>-->
+                                        <!--<select class="form-control" id="sel">-->
+                                        <!---->
+                                        <!--</select>-->
+                                        <!--</div>-->
+                                        <!--<div class="input-group input-group-sm" style="padding: 5px 5px 5px;margin:5px 5px 5px ">-->
+                                        <!--<span class="input-group-addon" >邮寄单号</span>-->
+                                        <!--<input type="text" class="form-control" placeholder="请输入邮寄单号" value="" id="mail">-->
+                                        <!--</div>-->
+                                        <!---->
+                                        <!---->
+                                        <!--<div class="input-group input-group-sm" style="padding: 5px 5px 5px;margin:5px 5px 5px ">-->
+                                        <!--<span class="input-group-addon" >邮寄信息</span>-->
+                                        <!--<textarea class="form-control" rows="3"  placeholder="" id="textarea" style="height:100PX;resize:none"></textarea>-->
+                                        <!--</div>-->
+                                        <!--</div>-->
+                                        <!--</div>-->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">取消
+                                            </button>
+                                            <button type="button" class="btn btn-primary" onclick="useradd()">提交
+                                            </button>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- 模态框（Modal）修改 -->
+                <div>
+                    <div class="modal fade " id="myModal2" tabindex="-1" role="dialog"
+                         aria-labelledby="myModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="myModalLabel2">修改用户补卡信息</h4>
+                                </div>
+                                <div class="modal-body">
+
+
+                                    <div style="padding: 10px 10px 10px;">
+                                        <div class="input-group input-group-sm"
+                                             style="padding: 5px 5px 5px;margin:5px 5px 5px ">
+                                            <span class="input-group-addon">员工姓名</span>
+                                            <input type="text" class="form-control" value="" id="uName2">
+
+                                            <span class="input-group-addon">员工工号</span>
+                                            <input type="text" class="form-control" placeholder="" value="" readonly
+                                                   id="aTime2">
+                                        </div>
+
+                                        <div class="input-group input-group-sm"
+                                             style="padding: 5px 5px 5px;margin:5px 5px 5px ">
+                                            <span class="input-group-addon">身份证号</span>
+                                            <input type="text" class="form-control" placeholder="" value=""
+                                                   id="dName2"/>
+
+                                            <span class="input-group-addon">电话号码</span>
+                                            <input type="text" class="form-control" placeholder="" value=""
+                                                   id="sName2"/>
+                                        </div>
+                                        <div class="input-group input-group-sm"
+                                             style="padding: 5px 5px 5px;margin:5px 5px 5px ">
+                                            <span class="input-group-addon">员工所属部门</span>
+                                            <input type="text" class="form-control" placeholder="" value=""
+                                                   id="department"/>
+
+                                            <!--<span class="input-group-addon">电话号码</span>-->
+                                            <!--<input type="text" class="form-control" placeholder="" value=""-->
+                                                   <!--id="sName2"/>-->
+                                        </div>
+
+                                        <div class="input-group input-group-sm"
+                                        style="padding: 5px 5px 5px;margin:5px 5px 5px ">
+                                        <span class="input-group-addon">状态</span>
+                                        <input type="radio" value="1" name="state2" />有效
+                                        <input type="radio" value="2" name="state2"/>无效
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">取消
+                                            </button>
+                                            <button type="button" class="btn btn-primary" onclick="userupdate()">
+                                                提交
+                                            </button>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal -->
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+            <script type="text/javascript">
+                //日期范围限制
+                var start = {
+                    elem: '#start',
+                    format: 'YYYY-MM-DD ',
+                    min: '2000-1-1', //设定最小日期为当前日期
+                    max: laydate.now(), //最大日期
+                    //istime: true,
+                    istoday: false,
+                    showBottom: false,
+                    btns: ['confirm']
+                };
+                var end = {
+                    elem: '#end',
+                    format: 'YYYY-MM-DD ',
+                    min: '2000-1-1',
+                    max: laydate.now(),
+                    // istime: true,
+                    istoday: false,
+                    choose: function (datas) {
+                        start.max = datas; //结束日选好后，重置开始日的最大日期
+                    }
+                };
+                laydate(start);
+                laydate(end);
+            </script>
+
+
+            <script type="text/javascript" src="../../static/zhljs/ygjs.js"></script>
+            <!--jq分页插件-->
+
+            <!--<script src="../../static/zhljs/fenyechajian/jquery.pagination.js"></script>-->
+            <!--<script src="../../static/zhljs/fenyechajian/highlight.min.js"></script>-->
+            <!--<link src="../../static/zhljs/fenyechajian/highlight.min.css" rel="stylesheet" type="text/css">-->
+            <!--<link src="../../static/zhljs/fenyechajian/common.css" rel="stylesheet" type="text/css">-->
+            <!--<link href="../../static/zhljs/fenyechajian/pagination.css" rel="stylesheet" type="text/css">-->
+            <!--<link href="../../static/zhljs/fenyechajian/reset.css" rel="stylesheet" type="text/css">-->
+
+
+</body>
+</html>

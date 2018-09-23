@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>请假</title>
+
+  <!-- Set render engine for 360 browser -->
+  <meta name="renderer" content="webkit">
+
+  <!-- No Baidu Siteapp-->
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+  <link rel="icon" type="image/png" href="../../static/weixindaka/assets/i/favicon.png">
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="icon" sizes="192x192" href="../../static/weixindaka/assets/i/app-icon72x72@2x.png">
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+  <link rel="apple-touch-icon-precomposed" href="../../static/weixindaka/assets/i/app-icon72x72@2x.png">
+
+  <!-- Tile icon for Win8 (144x144 + tile color) -->
+  <meta name="msapplication-TileImage" content="assets/i/app-icon72x72@2x.png">
+  <meta name="msapplication-TileColor" content="#0e90d2">
+
+  <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+  <!--
+  <link rel="canonical" href="http://www.example.com/">
+  -->
+
+  <link rel="stylesheet" href="../../static/weixindaka/assets/css/amazeui.min.css">
+  <link rel="stylesheet" href="../../static/weixindaka/assets/css/app.css">
+  
+  <!--自建css样式-->
+  	<link rel="stylesheet" type="text/css" href="../../static/weixindaka/css/wechat-signin.css"/>
+</head>
+<body class="bg">
+<!--[if lte IE 9]>
+<p class="browsehappy">你正在使用<strong>过时</strong>的浏览器，Amaze UI 暂不支持。 请 <a
+  href="http://browsehappy.com/" target="_blank">升级浏览器</a>
+  以获得更好的体验！</p>
+<![endif]-->
+<!--顶部-->
+	<header class="am-u-sm-12 am-padding-0 am-margin-0">
+		<p>请假</p>
+	</header>
+<!--内容-->
+	<section class="card-con">
+		<p>
+			<span>请假类型：</span>
+			<select>
+				<!--<option>---请选择---</option>-->
+				<option>病假</option>
+				<option>have fun</option>
+			</select>
+		</p>
+		<p>
+			<span>开始时间：</span>
+			<select id="leave-start-time" onchange="enddate()">
+				
+			</select>
+			</p>
+			
+		<p>
+			<span>结束时间：</span>
+			<select id="leave-end-time" onchange="LeaveDays()">
+				<option id="end1" value="0">---请先选择开始日期--</option>
+				
+			</select>
+			<!--<input type="date" name="" id="leave-end-time" value=""  onchange="LeaveDays()" />-->
+		</p>
+		<p>
+			<span>请假时间：</span>
+			<b id="leave-days" ></b>天
+		</p>
+		<p>
+			<span>请假事由：</span>
+			<textarea class="leave-reason" id="leaveReason"></textarea>
+		</p>
+		<p><span>还可以输入：</span><em id="contentCountLeft" style="color: blue;">30</em>字</p>
+		<form id="upload" method="post" enctype="multipart/form-data">
+		<p>
+			<span class="upload">上传照片：</span>
+			<label for="file"><img src="../../static/weixindaka/img/upload-pic.png" width="60rem"></label>
+			<input type="file" id="file" name=""  accept="image/*" style="display: none"/>
+		</p>
+			<input type="button" id="fileSubmit"  value="上传" onclick="pictureupload()" />
+		</form>
+		<div id="image" style="">
+		    <img src="" width="100%" />
+		</div>
+	</section>
+	<button class="click" onclick="addleaveinfo()">提交</button>
+	
+<!--底部-->
+	
+<!--[if lt IE 9]>
+<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+<script src="../../static/weixindaka/assets/js/amazeui.ie8polyfill.min.js"></script>
+<![endif]-->
+
+<!--[if (gte IE 9)|!(IE)]><!-->
+<script src="../../static/weixindaka/assets/js/jquery.min.js"></script>
+<!--<![endif]-->
+<script src="../../static/weixindaka/assets/js/amazeui.min.js"></script>
+<script src="../../static/weixindaka/js/leave.js"></script>
+</body>
+</html>
+<script type="text/javascript">
+	//上传图片预览
+	document.getElementById('file').onchange = function() {
+        var imgFile = this.files[0];
+        var fr = new FileReader();
+        fr.onload = function() {
+            document.getElementById('image').getElementsByTagName('img')[0].src = fr.result;
+        };
+        fr.readAsDataURL(imgFile);
+    };
+</script>
+
+<script type="text/javascript">
+//	获取时间
+	window.onload=function(){
+	  var date=new Date();
+	  var year=date.getFullYear(); //获取当前年份
+	  var mon=date.getMonth()+1;//获取当前月份
+//	  不足10 补0
+	  if(mon>=1&&mon<=9){mon="0"+mon};
+	  var day=date.getDate(); //获取当前日
+	  if(day>=1&&day<=9){day="0"+day};
+	  var today=year+'-'+mon+'-'+day;
+//for循环 把请假日期开始，传入select option
+		for(var i=0;i<7;i++){
+			var d=new Date();
+			d.setTime(d.getTime()+24*60*60*1000*i);
+			var year=d.getFullYear(); //获取当前年份
+		  var mon=d.getMonth()+1;//获取当前月份
+	//	  不足10 补0
+		  if(mon>=1&&mon<=9){mon="0"+mon};
+		  var day=d.getDate(); //获取当前日
+		  if(day>=1&&day<=9){day="0"+day};
+			var s=year+"-"+mon+"-"+day;
+			$("#leave-start-time option").eq(i).text(s);
+		}
+//for循环 计算请假结束日期，并传入select option	
+		for(var j=0;j<7;j++){
+			var d=new Date();
+			d.setTime(d.getTime()+24*60*60*1000*j);
+			var year=d.getFullYear(); //获取当前年份
+		  var mon=d.getMonth()+1;//获取当前月份
+	//	  不足10 补0
+		  if(mon>=1&&mon<=9){mon="0"+mon};
+		  var day=d.getDate(); //获取当前日
+		  if(day>=1&&day<=9){day="0"+day};
+			var s=year+"-"+mon+"-"+day;
+			$("#leave-end-time option").eq(j+1).text(s);
+		}
+	}
+//定义函数 结束日期随开始日期变化， 触发条件为开始时间变化
+	function enddate(){
+		for(var j=0;j<7;j++){
+			var d= new Date($("#leave-start-time option:selected").text());
+			d.setTime(d.getTime()+24*60*60*1000*j);
+			var year=d.getFullYear(); //获取当前年份
+		  var mon=d.getMonth()+1;//获取当前月份
+	//	  不足10 补0
+		  if(mon>=1&&mon<=9){mon="0"+mon};
+		  var day=d.getDate(); //获取当前日
+		  if(day>=1&&day<=9){day="0"+day};
+			var s=year+"-"+mon+"-"+day;
+			$("#leave-end-time option").eq(j+1).text(s);
+		}
+	}
+//计算请假时长	
+	function LeaveDays(){
+		var start=new Date($("#leave-start-time option:selected").text());
+		var end=new Date($("#leave-end-time  option:selected").text());
+		if(start!=""&&end!=""){
+			var holidays= parseInt((end-start)/1000/60/60/24)+1;
+			$("#leave-days").html(holidays);
+		}
+	}
+</script>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>登录</title>
+
+  <!-- Set render engine for 360 browser -->
+  <meta name="renderer" content="webkit">
+
+  <!-- No Baidu Siteapp-->
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+  <link rel="icon" type="image/png" href="assets/i/favicon.png">
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="icon" sizes="192x192" href="assets/i/app-icon72x72@2x.png">
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+  <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
+
+  <!-- Tile icon for Win8 (144x144 + tile color) -->
+  <meta name="msapplication-TileImage" content="assets/i/app-icon72x72@2x.png">
+  <meta name="msapplication-TileColor" content="#0e90d2">
+
+  <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+  <!--
+  <link rel="canonical" href="http://www.example.com/">
+  -->
+
+  <link rel="stylesheet" href="assets/css/amazeui.min.css">
+  <link rel="stylesheet" href="assets/css/app.css">
+  
+  <!--自建css样式-->
+  	<link rel="stylesheet" type="text/css" href="css/wechat-signin.css"/>
+</head>
+<body>
+<!--[if lte IE 9]>
+<p class="browsehappy">你正在使用<strong>过时</strong>的浏览器，Amaze UI 暂不支持。 请 <a
+  href="http://browsehappy.com/" target="_blank">升级浏览器</a>
+  以获得更好的体验！</p>
+<![endif]-->
+<!--顶部-->
+	<header class="am-u-sm-12 am-padding-0 am-margin-0">
+		<p>微信考勤管理</p>
+	</header>
+<!--内容-->
+	<section class="banner">
+		<img src="img/loginbanner.png"/ width="100%">
+	</section>
+	<section class="login-user">
+		<form action="" method="post">
+			<p><span>姓名：</span><input type="text" class="longinput" /></p>
+			<p><span>手机号码：</span><input type="text" class="longinput" id="cellphone" /></p>
+			<p>
+				<span>验证码：</span>
+				<input type="text" class="shortinput" />
+				<input type="button"  class="shortinput yzmbtn" onclick="sendyzm()" id="btn" disabled="disabled" name="" value="获取验证码" />
+			</p>
+			<input type="submit" class="login-in" value="登录"/>
+		</form>
+	</section>
+	
+<!--底部-->
+	
+<!--[if lt IE 9]>
+<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+<script src="assets/js/amazeui.ie8polyfill.min.js"></script>
+<![endif]-->
+
+<!--[if (gte IE 9)|!(IE)]><!-->
+<script src="assets/js/jquery.min.js"></script>
+<!--<![endif]-->
+<script src="assets/js/amazeui.min.js"></script>
+</body>
+</html>
+<script type="text/javascript">
+	//验证手机号码是否11位，控制获取验证码按钮状态
+	function upperCase(){
+		var phone = $("#cellphone").val();
+			if(phone.length == 11){ 
+				$('#btn').attr('disabled',false);
+				$("#btn").removeClass("noclick").addClass("click");
+			}else{
+				$("#btn").removeClass("click").addClass("noclick");
+			}
+	}
+	$('#cellphone').on('input',function(){
+		upperCase();
+	});
+	//获取验证码两次相隔60秒
+	var countdown=60; 
+	function sendyzm(){
+	    var obj = $("#btn");
+	    settime(obj);
+	}
+	function settime(obj) { //发送验证码倒计时
+	    if (countdown == 0) { 
+	        obj.attr('disabled',false);
+	        obj.val("获取验证码");
+	        countdown = 60; 
+	        return;
+	    }else{ 
+	        obj.attr('disabled',true);
+	        obj.val("重新发送(" + countdown + ")");
+	        countdown--; 
+	        $("#btn").removeClass("click").addClass("noclick");
+	    } 
+		setTimeout(function() { settime(obj)},1000) 
+	};
+	
+</script>
+

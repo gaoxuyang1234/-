@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>主页面</title>
+
+  <!-- Set render engine for 360 browser -->
+  <meta name="renderer" content="webkit">
+
+  <!-- No Baidu Siteapp-->
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+  <link rel="icon" type="image/png" href="../../static/assets/i/favicon.png">
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="icon" sizes="192x192" href="../../static/assets/i/app-icon72x72@2x.png">
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+  <link rel="apple-touch-icon-precomposed" href="../../static/assets/i/app-icon72x72@2x.png">
+
+  <!-- Tile icon for Win8 (144x144 + tile color) -->
+  <meta name="msapplication-TileImage" content="assets/i/app-icon72x72@2x.png">
+  <meta name="msapplication-TileColor" content="#0e90d2">
+
+  <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+  <!--
+  <link rel="canonical" href="http://www.example.com/">
+  -->
+
+  <link rel="stylesheet" href="../../static/assets/css/amazeui.min.css">
+  <link rel="stylesheet" href="../../static/assets/css/app.css">
+  
+  <!--自建css样式-->
+  	<link rel="stylesheet" type="text/css" href="../../css/wechat-signin.css"/>
+</head>
+<body>
+<!--[if lte IE 9]>
+<p class="browsehappy">你正在使用<strong>过时</strong>的浏览器，Amaze UI 暂不支持。 请 <a
+  href="http://browsehappy.com/" target="_blank">升级浏览器</a>
+  以获得更好的体验！</p>
+<![endif]-->
+<!--顶部-->
+	<header class="am-u-sm-12 am-padding-0 am-margin-0">
+		<p>今日打卡情况</p>
+	</header>
+<!--内容-->
+	<section class="signin-state">
+		<div class="circle signin">
+			<h4 id="signin-state">去签到</h4>
+			<p  id="signin-time">---</p>
+		</div>
+		<div class="circle signout">
+			<h4  id="signout-state">去签退</h4>
+			<p id="signout-time">---</p>
+		</div>
+	</section>
+	<section class="index-option">
+	
+		<a href="/accept/wxcard"><img src="../../static/img/u18.png"/>补卡</a>
+		<a href="/accept/wxleave"><img src="../../static/img/u14.png"/>请假</a>
+		<a href="/accept/wxdetails"><img src="../../static/img/u16.png"/>考勤记录</a>
+	</section>
+	
+<!--底部-->
+	
+<!--[if lt IE 9]>
+<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+<script src="assets/js/amazeui.ie8polyfill.min.js"></script>
+<![endif]-->
+
+<!--[if (gte IE 9)|!(IE)]><!-->
+<script src="../../static/assets/js/jquery.min.js"></script>
+<!--<![endif]-->
+<script src="../../static/assets/js/amazeui.min.js"></script>
+
+
+<!-- ajax   gxy -->
+<script type="text/javascript">
+   $(document).ready(function() { 
+     //缓存
+     let uid=localStorage.getItem("uid");
+  
+  
+    var date =new Date();
+    var year=date.getFullYear();
+    var month=date.getMonth()+1;
+    var day=date.getDate();
+    if(month>=1&&month<=9){
+    month="0"+month;
+    }
+    if(day>=0&&day<=9){
+    day="0"+day;
+    }
+     strtime=year+"-"+month+"-"+day;
+   
+   	 
+   	$.ajax({
+   	   url:"/syspunchin/checkpunch",
+   	   type:'post',
+   	   datatype:'json',
+   	   data:{uid:uid,dateTime:strtime},    
+   	   success:function(data){
+   	   if(data==''){
+   	   //空
+   	  //没有签到！
+		   	   	$('.signin').click(function(){
+					window.location.href="qiandao";
+				 })
+				 
+	   //没有签到也可以签退
+	              $('.signout').click(function(){
+						 window.location.href="signout";
+					}) 
+				 
+				 
+   	   }else{
+   	   
+   	          
+	   	            //添加请假情况
+	   	            if(data.punchState=="1"){
+	   	            	$("#signin-state").html("已请假");
+	   	                $(".signin").addClass("finish");
+	   	                $("#signout-state").html("已请假");
+		   	            $(".signout").addClass("finish");
+	   	               
+	   	            }
+   	   
+   	   //有数据
+   	   		if(data.punchStartTime==null && data.punchEndTime==null){
+   	   		
+   	   		}else{
+   	   		
+	   	     if(data.shiftName=="正常班"){     
+ 
+	   	            //签到	
+	   	         	if(data.punchStartTime!=null){       
+			   	         if(data.punchStartTime <= "09:00:00"){
+			   	         	$("#signin-state").html("已签到");
+			   	         	$(".signin").addClass("finish");
+			   	          }else{
+			   	         	 $("#signin-state").html("迟到");	
+			   	          	$(".signin").addClass("warning");
+			   	          }
+			   	       }
+			   	     else{ $("#signin-state").html("未签到");
+			   	           $(".signin").addClass("warning");
+			   	          }   
+			   	         
+	   	          //签退
+	   	          if(data.punchEndTime!=null){ 
+	   	          //签退时间
+		   	       $("#signout-time").html(data.punchEndTime);
+		   	         if("18:00:00"< data.punchEndTime  ){
+		   	         	
+		   	         	$("#signout-state").html("已签退");
+		   	         	$(".signout").addClass("finish");
+		   	          }else{
+		   	         	 $("#signout-state").html("早退");	
+		   	          	$(".signout").addClass("warning");
+		   	          }
+	   	          }else{
+	   	                 //点击签退           
+				   	      $('.signout').click(function(){
+						      window.location.href="signout";
+					       }) 
+				 
+	   	               }
+	   	     
+	   	     $("#signin-time").html(data.punchStartTime);
+	   	      
+	  	          }
+	                  //早班
+	                   if(data.shiftName=="早班"){
+	   	      	//签到
+	   	      	if(data.punchStartTime!=null){  
+		   	         if(data.punchStartTime <= "08:30:00"){
+		   	         	$("#signin-state").html("已签到");
+		   	         	$(".signin").addClass("finish");
+		   	          }else{
+		   	         	 $("#signin-state").html("迟到");	
+		   	          	$(".signin").addClass("warning");
+		   	          }
+		   	      }
+		   	    else{ $("#signin-state").html("未签到");
+			   	      $(".signin").addClass("warning");
+			   	    }     
+	   	          
+	   	          
+	   	          //签退
+	   	         if(data.punchEndTime!=null){
+	   	        	//签退时间
+		   	        $("#signout-time").html(data.punchEndTime);
+		   	         if("14:30:00"<= data.punchEndTime  ){
+		   	         	
+		   	         	$("#signout-state").html("已签退");
+		   	         	$(".signout").addClass("finish");
+		   	          }else{
+		   	         	 $("#signout-state").html("早退");	
+		   	          	$(".signout").addClass("warning");
+		   	          }
+	   	          }else{          
+				   	      //点击签退           
+				   	      $('.signout').click(function(){
+						      window.location.href="signout";
+					       }) 
+	   	               }
+	   	     
+	   	      $("#signin-time").html(data.punchStartTime);
+	  	          }
+	        
+	        
+	        
+	            //晚班
+	  
+	           
+	          if(data.shiftName=="晚班"){
+	            //签到
+	   	      	if(data.punchStartTime!=null){  
+			   	         if(data.punchStartTime <= "14:30:00"){
+			   	         	$("#signin-state").html("已签到");
+			   	         	$(".signin").addClass("finish");
+			   	          }else{
+			   	         	 $("#signin-state").html("迟到");	
+			   	          	$(".signin").addClass("warning");
+			   	          }
+			   	}else{ $("#signin-state").html("未签到");
+			   	      $(".signin").addClass("warning");
+			   	    }    
+	   	          //签退
+	   	         if(data.punchEndTime!=null){
+	   	        	//签退时间
+		   	        $("#signout-time").html(data.punchEndTime);
+		   	         if("20:00:00"<= data.punchEndTime  ){
+		   	         	
+		   	         	$("#signout-state").html("已签退");
+		   	         	$(".signout").addClass("finish");
+		   	          }else{
+		   	         	 $("#signout-state").html("早退");	
+		   	          	$(".signout").addClass("warning");
+		   	          }
+	   	          }else{
+	   	                            
+				   	      //点击签退           
+				   	      $('.signout').click(function(){
+						      window.location.href="signout";
+					       }) 
+	   	               }
+	   	     
+	   	      $("#signin-time").html(data.punchStartTime);
+	  	          }
+	     }                
+	       	   
+   	   }
+   	 
+   	   }
+   	})
+   	
+   });
+
+</script>
+</body>
+</html>
+
+
+
+

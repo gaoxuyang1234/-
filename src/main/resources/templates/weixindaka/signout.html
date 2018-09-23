@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>签退</title>
+
+  <!-- Set render engine for 360 browser -->
+  <meta name="renderer" content="webkit">
+
+  <!-- No Baidu Siteapp-->
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+  <link rel="icon" type="image/png" href="../../static/assets/i/favicon.png">
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="icon" sizes="192x192" href="../../static/assets/i/app-icon72x72@2x.png">
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+  <link rel="apple-touch-icon-precomposed" href="../../static/assets/i/app-icon72x72@2x.png">
+
+  <!-- Tile icon for Win8 (144x144 + tile color) -->
+  <meta name="msapplication-TileImage" content="assets/i/app-icon72x72@2x.png">
+  <meta name="msapplication-TileColor" content="#0e90d2">
+
+  <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+  <!--
+  <link rel="canonical" href="http://www.example.com/">
+  -->
+
+  <link rel="stylesheet" href="../../static/assets/css/amazeui.min.css">
+  <link rel="stylesheet" href="../../static/assets/css/app.css">
+  
+  <!--自建css样式-->
+  	<link rel="stylesheet" type="text/css" href="../../static/css/wechat-signin.css"/>
+
+</head>
+<body>
+<!--[if lte IE 9]>
+<p class="browsehappy">你正在使用<strong>过时</strong>的浏览器，Amaze UI 暂不支持。 请 <a
+  href="http://browsehappy.com/" target="_blank">升级浏览器</a>
+  以获得更好的体验！</p>
+<![endif]-->
+<!--顶部-->
+	<header class="am-u-sm-12 am-padding-0 am-margin-0">
+		<p>今日打卡情况</p>
+	</header>
+<!--内容-->
+	
+	<section class="signout-info" >
+		<div class="signout-record-l">
+			<h2 class="signout-title">签到记录</h2>
+			 <img src=""  id="img1" style="width: 250px"/>
+			
+		</div>	
+		<div class="signout-record-r">
+			<p>姓名：<span id="Username" ></span></p>    
+			<p>班次：<span id="shiftName" ></span></p>
+			<p>签到时间：<span id="StartTime"></span></p>
+			<p>签到地点：<span id="site"></span></p>
+			<p>当前状态：<span id="signInState"></span></p>
+		</div>
+		
+	</section>
+	<section class="no-signin">
+		<input type="button" name="" id="" value="无签到，请补卡" />
+	</section>
+	
+	
+        <form id="test" action="/syspunchin/addEnd"  method="post"  enctype="multipart/form-data">	
+              <!--  隐藏punchid -->
+     <input type="hidden" id="punchid"  name="punchId">
+     <!-- 直接签退的时候 用到uid -->
+     <input type="hidden" id="uid"  name="userId">
+	 <section class="signout-option">
+		<h2 class="signout-title">签退</h2>
+		<p>当前时间：<span id="time"></span></p>
+		<!--  时间在后台获得      隐藏域为了传地址 -->
+		<input  type="hidden"  id="signBackPlace" name="signBackPlace" >   
+		<p>当前地点：<span id="locale" ></span></p>
+		<p id="noSignClass">班次：
+			<select  id="signout-class"  name="shiftName" onchange="shangban()"> <!-- name="shiftName" -->
+				<option >---请选择---</option>
+				<option value="正常班">全天班（9：00-18：00）</option>
+				<option value="早班">早班（8：30-14：30）</option>
+				<option value="晚班">晚班（14:30-20:00）</option>
+			</select>
+		</p>
+		<p>
+			<label for="file">上传照片：<img src="../../static/img/upload-pic.png"></label>
+			<input type="file"  id="file"   accept="image/*" style="display: none"  name="signBackPath1"  />    
+		</p>
+		<div id="image" style="">
+		    <img src="" width="100%" />
+		</div>
+		<p>备注：<textarea placeholder="签退"  name="signBackReason"></textarea></p> 
+	</section>
+	<button  type="submit" id="normal" disabled="disabled" name="signBackState" value="1">正常签退</button>
+	<button  type="" id="earlyleave"  disabled="disabled" name="signBackState" value="2" onclick="qiantui()">早退签退</button>
+	
+     </form>
+<!--底部-->
+	
+<!--[if lt IE 9]>
+<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+<script src="assets/js/amazeui.ie8polyfill.min.js"></script>
+<![endif]-->
+
+<!--[if (gte IE 9)|!(IE)]><!-->
+<script src="../../static/assets/js/jquery.min.js"></script>
+<!--<![endif]-->
+<script src="../../static/assets/js/amazeui.min.js"></script>
+</body>
+</html>
+
+
+
+
+<script type="text/javascript">
+
+
+  //缓存
+  let uid=localStorage.getItem("uid");
+//为uid赋值
+$("#uid").val(uid);
+//获得name
+  $.ajax({
+   url:"/syspunchin/checkpunch2",
+   type:"post",
+   datatype:"json",
+   data:{uid:uid},
+   success:function(data){
+   $("#Username").html(data.userName);
+   }
+   })
+
+
+
+
+
+//当前日期
+  var date =new Date();
+    var year=date.getFullYear();
+    var month=date.getMonth()+1;
+    var day=date.getDate();
+    if(month>=1&&month<=9){
+    month="0"+month;
+    }
+    if(day>=0&&day<=9){
+    day="0"+day;
+    }
+    strtime=year+"-"+month+"-"+day;
+	var h=date.getHours(); //获取小时
+    if(h>=0&&h<=9){h="0"+h};
+    var m=date.getMinutes(); //获取分钟
+    if(m>=0&&m<=9){m="0"+m};
+    var s=date.getSeconds();
+    if(s>=0&&s<=9){s="0"+s};//获取秒
+	now=h+":"+m+":"+s;
+
+
+$.ajax({
+		//根据id获得签到记录
+		url:"/syspunchin/checkpunch",
+		type:'post',
+		datatype:'json',
+		data:{uid:uid,dateTime:strtime},
+		success:function(data){
+			
+			$("#shiftName").html(data.shiftName);
+			$("#StartTime").html(data.punchStartTime);
+			$("#site").html(data.punchPlace);
+			$("#signInState").html((data.signInState==1)?"已签到":"迟到");
+			
+			$('#img1').attr("src","/syspunchin/show?fileName=" + data.picturePath)
+
+	$.ajax({
+		//根据id获得签到记录
+		url:"/syspunchin/show",
+		type:'post',
+		datatype:'json',
+		data:{fileName:data.picturePath},
+		success:function(data){
+		alert(1);
+			}
+			})
+	
+		//punchId
+		$("#punchid").val(data.punchId);
+			
+			if(data!=''){
+				//有数据 补卡功能隐藏
+				$(".no-signin").hide();
+				$("#noSignClass").hide();
+				/* 获取班次 */
+				var classes=$("#shiftName").html();
+				console.log(classes); 
+				//	正常班
+				if(classes=="正常班"){
+					if(now>="18:00:00"){
+						$("#normal").attr("disabled",false).addClass("click");
+						$("#earlyleave").attr("disabled",true).removeClass("click");
+					}else{
+						$("#earlyleave").attr("disabled",false).addClass("click");
+						$("#normal").attr("disabled",true).removeClass("click");
+					}
+				}
+				//	早班
+				else if(classes=="早班"){
+					if(now>="14:00:00"){
+						$("#normal").attr("disabled",false).addClass("click");
+						$("#earlyleave").attr("disabled",true).removeClass("click");
+					}else{
+						$("#earlyleave").attr("disabled",false).addClass("click");
+						$("#normal").attr("disabled",true).removeClass("click");
+					}
+				}
+		       //  晚班
+				else if(classes=="晚班"){
+					if(now>="20:00:00"){
+						$("#normal").attr("disabled",false).addClass("click");
+						$("#earlyleave").attr("disabled",true).removeClass("click");
+					}else{
+						$("#earlyleave").attr("disabled",false).addClass("click");
+						$("#normal").attr("disabled",true).removeClass("click");
+					}
+				}
+				 
+			
+			
+			}else{ 
+			$("#test").attr("action","/syspunchin/End");
+				$(".signout-info").hide();
+			}
+				
+			
+			
+		}
+		
+		})
+	function shangban(){
+		var noclasses=$("#signout-class").find("option:selected").val();
+		if(noclasses=="正常班"){
+			if(now>="18:00:00"){
+				$("#normal").attr("disabled",false).addClass("click");
+				$("#earlyleave").attr("disabled",true).removeClass("click");
+			}else{
+				$("#earlyleave").attr("disabled",false).addClass("click");
+				$("#normal").attr("disabled",true).removeClass("click");
+			}
+		}
+//	早班
+		else if(noclasses=="早班"){
+			if(now>="14:30:00"){
+				$("#normal").attr("disabled",false).addClass("click");
+				$("#earlyleave").attr("disabled",true).removeClass("click");
+			}else{
+				$("#earlyleave").attr("disabled",false).addClass("click");
+				$("#normal").attr("disabled",true).removeClass("click");
+			}
+		}
+//		晚班
+		else if(noclasses=="晚班"){
+			if(now>="20:00:00"){
+				$("#normal").attr("disabled",false).addClass("click");
+				$("#earlyleave").attr("disabled",true).removeClass("click");
+			}else{
+				$("#earlyleave").attr("disabled",false).addClass("click");
+				$("#normal").attr("disabled",true).removeClass("click");
+			}
+		}
+//未选择班次
+		else{
+			$("#normal").attr("disabled",true).removeClass("click");
+			$("#earlyleave").attr("disabled",true).removeClass("click");
+		}
+	}
+
+
+
+function qiantui(){
+
+ var r=confirm("你確定要早退？")
+  if (r==true)
+    {
+      $("#earlyleave").attr("type","submit")
+    }
+  else
+    {
+      $("#earlyleave").attr("type","button")
+    }
+  
+}
+
+
+
+</script>
+
+
+<script type="text/javascript">
+//	获取时间
+	//	获取当前时间
+	window.onload=function(){
+	  setInterval(function(){
+		   var date=new Date();
+		   var year=date.getFullYear(); //获取当前年份
+		   var mon=date.getMonth()+1;//获取当前月份
+		   if(mon>=1&&mon<=9){mon="0"+mon};
+		   var day=date.getDate(); //获取当前日
+		   if(day>=1&&day<=9){day="0"+day};
+		   var h=date.getHours(); //获取小时
+		   if(h>=0&&h<=9){h="0"+h};
+		   var m=date.getMinutes(); //获取分钟
+		   if(m>=0&&m<=9){m="0"+m};
+		   var s=date.getSeconds();
+		   if(s>=0&&s<=9){s="0"+s};//获取秒
+		   var today=year+'-'+mon+'-'+day;
+		   now=h+':'+m+':'+s;
+		   $('#time').html(today+' '+now);
+		},1000)
+	}
+//上传图片预览
+	document.getElementById('file').onchange = function() {
+        var imgFile = this.files[0];
+        var fr = new FileReader();
+        fr.onload = function() {
+            document.getElementById('image').getElementsByTagName('img')[0].src = fr.result;
+        };
+        fr.readAsDataURL(imgFile);
+    };
+</script>
+<!--获取当前位置-百度地图api-->
+<script src="http://api.map.baidu.com/api?v=2.0&ak=pv2lfQntHXoYi6vFN4ZRr9scZDltjC6r"></script>
+<script type="text/javascript">
+    //获取当前位置
+    var geolocation = new BMap.Geolocation();
+    geolocation.getCurrentPosition(function(r){
+        if(this.getStatus() == BMAP_STATUS_SUCCESS){
+            mk = new BMap.Marker(r.point);
+            getAddress(r.point);
+        }else {
+            alert('failed'+this.getStatus());
+        }
+    });
+    //获取地址信息，设置地址label
+    function getAddress(point){
+        var gc = new BMap.Geocoder();
+        gc.getLocation(point, function(rs){
+            var addComp = rs.addressComponents;
+            var address =  addComp.province +  addComp.city + addComp.district + addComp.street + addComp.streetNumber;//获取地址
+            $('#locale').html(address);
+            $('#signBackPlace').val(address);
+        });
+
+    }
+</script>

@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxysoft.basic.mapper.StatisMapper">
+ <!-- 于5-24修改sql:状态为0,已办理 -->
+ 	<select id="selectDepList" parameterType="com.yxysoft.base.AcceptManage" resultType="java.util.HashMap">
+ 		SELECT dep.d_id dId,dep.d_name dName,dep.p_d_id pdId, 
+		(SELECT COUNT(1) FROM view_qxzw_bus_applys
+		<where>
+			d_id=dep.d_id AND state  in(0,4,7)
+			<if test="mas.befDate!=null and mas.aftDate!=null">
+ 			AND  a_time BETWEEN STR_TO_DATE(#{mas.befDate},'%Y-%m-%d') AND  DATE_ADD(STR_TO_DATE(#{mas.aftDate},'%Y-%m-%d'),INTERVAL 1 DAY)
+ 			</if>
+ 			 
+ 			<if test="mas.befDate==null or mas.aftDate==null">
+ 		      AND PERIOD_DIFF( DATE_FORMAT( NOW( ) , '%Y%m' ) , DATE_FORMAT( a_time, '%Y%m' ) ) =0
+ 			</if>
+ 		
+		</where> 
+		   ) countNum, 
+		   (select count(1) from qxzw_departments WHERE p_d_id=2) countDep,
+		   (select count(1) from qxzw_departments WHERE p_d_id=3) countStreet
+		FROM qxzw_departments dep 
+		order by countNum desc
+ 	</select>
+ 	<!-- 于5-24修改sql:状态为0,已办理 -->
+ 	<select id="selectBusList" parameterType="com.yxysoft.base.AcceptToolBean" resultType="com.yxysoft.base.AcceptManage">
+ 		SELECT v.`s_id` sId,v.`s_name` sName,v.`d_id` dId,v.`d_name` dName,v.`a_time` aTime,COUNT(s_id) countNum FROM view_qxzw_bus_applys  v 
+ 	    <where>
+ 	        v.state in(0,4,7)
+ 	        <if test="mas.dId !=null">
+ 	        	AND v.d_id=#{mas.dId}
+ 	        </if>
+ 	    	<if test="mas.sidOrSname!=null">
+ 	    		AND (v.s_id LIKE CONCAT('%',#{mas.sidOrSname},'%')   OR v.s_name LIKE CONCAT('%',#{mas.sidOrSname},'%') )
+ 	    	</if>
+ 	    	<if test="mas.dId==null and mas.didOrDname!=null">
+ 	    	    AND (v.d_id LIKE CONCAT('%',#{mas.didOrDname},'%')   OR v.d_name LIKE CONCAT('%',#{mas.didOrDname},'%') )
+ 	    	</if>
+ 	    	<if test="mas.befDate!=null and mas.aftDate!=null">
+ 		        AND v.a_time BETWEEN STR_TO_DATE(#{mas.befDate},'%Y-%m-%d') AND  DATE_ADD(STR_TO_DATE(#{mas.aftDate},'%Y-%m-%d'),INTERVAL 1 DAY)
+ 		    </if>
+ 		      
+ 		    <if test="mas.befDate==null or mas.aftDate==null">
+ 		  		AND  PERIOD_DIFF( DATE_FORMAT( NOW( ) , '%Y%m' ) , DATE_FORMAT( v.a_time, '%Y%m' ) ) =0
+ 			</if>
+ 			
+ 	    </where>
+ 	    GROUP BY s_id
+ 	    ORDER BY s_id
+ 	    limit #{page},#{size}
+ 	</select>
+ 	<!-- 于5-24修改sql:状态为0,已办理 -->
+ 	<select id="selectBusListCount" parameterType="com.yxysoft.base.AcceptToolBean" resultType="_int">
+ 		select count(1) FROM(
+ 		SELECT count(1) FROM view_qxzw_bus_applys  v 
+ 	    <where>
+ 	        
+ 	        <if test="mas.state!=null">
+ 	        	and v.state =#{mas.state}
+ 	        </if>
+ 	        <if test="mas.state==null">
+ 	        	and v.state  in(0,4,7)
+ 	        </if>
+ 	        <if test="mas.dId !=null">
+ 	        	AND v.d_id=#{mas.dId}
+ 	        </if>
+ 	    	<if test="mas.sidOrSname!=null">
+ 	    		AND (v.s_id LIKE CONCAT('%',#{mas.sidOrSname},'%')   OR v.s_name LIKE CONCAT('%',#{mas.sidOrSname},'%') )
+ 	    	</if>
+ 	    	<if test="mas.dId==null and mas.didOrDname!=null">
+ 	    	    AND (v.d_id LIKE CONCAT('%',#{mas.didOrDname},'%')   OR v.d_name LIKE CONCAT('%',#{mas.didOrDname},'%') )
+ 	    	</if>
+ 	    	<if test="mas.befDate!=null and mas.aftDate!=null">
+ 		        AND v.a_time BETWEEN STR_TO_DATE(#{mas.befDate},'%Y-%m-%d') AND  DATE_ADD(STR_TO_DATE(#{mas.aftDate},'%Y-%m-%d'),INTERVAL 1 DAY)
+ 		    </if>
+ 		     
+ 		    <if test="mas.befDate==null or mas.aftDate==null">
+ 		  		AND  PERIOD_DIFF( DATE_FORMAT( NOW( ) , '%Y%m' ) , DATE_FORMAT( v.a_time, '%Y%m' ) ) =0
+ 			</if>
+ 			
+ 	    </where>
+ 	    GROUP BY v.s_id
+ 	    ) a
+ 	</select>
+ 	<!-- 于5-24修改sql:状态为0,已办理 -->
+ 	<select id="selectUsList" parameterType="com.yxysoft.base.AcceptToolBean" resultType="com.yxysoft.base.AcceptManage">
+ 	SELECT   v.a_id aId,v.u_id uId,v.u_name uName,v.card_no cardNo,v.mobile mobile,v.a_time  aTime,v.s_id sId,v.s_name sName,v.state state,
+ 	v.d_name dName,(SELECT acc_code FROM qxzw_bus_accept_receipt WHERE a_id=v.a_id  ORDER BY receipt_time DESC LIMIT 0,1) accCode,
+ 	v.yuan_flag yuanFlag,v.zheng_flag zhengFlag,v.mail mail,
+ 	(SELECT evaluate_level FROM qxzw_bus_applys_evaluate WHERE a_id=v.a_id limit 0,1) lev
+ 	 FROM view_qxzw_bus_applys v
+ 	<where>
+ 		<if test="mas.dId!=null">
+ 		     AND v.d_id=#{mas.dId}
+ 		</if>
+ 		<if test="mas.uId!=null">
+ 			AND v.u_id=#{mas.uId}
+ 		</if>
+ 		<if test="mas.state!=null">
+ 		    AND v.state=#{mas.state}
+ 		</if>
+ 		<if test="mas.state==null">
+ 		    AND v.state  in(0,4,7)
+ 		</if>
+ 		<if test="mas.befDate!=null and mas.aftDate!=null">
+ 		AND v.a_time BETWEEN STR_TO_DATE(#{mas.befDate},'%Y-%m-%d') AND  DATE_ADD(STR_TO_DATE(#{mas.aftDate},'%Y-%m-%d'),INTERVAL 1 DAY)
+ 		</if>
+ 		 
+ 		<if test="mas.befDate==null or mas.aftDate==null">
+ 		   AND  PERIOD_DIFF( DATE_FORMAT( NOW( ) , '%Y%m' ) , DATE_FORMAT( v.a_time, '%Y%m' ) ) =0
+ 		</if>
+ 	
+ 		<if test="mas.sidOrSname!=null">
+ 		    AND (v.s_id LIKE CONCAT('%',#{mas.sidOrSname},'%')   OR v.s_name LIKE CONCAT('%',#{mas.sidOrSname},'%') )
+ 		</if>
+ 		
+ 		<if test="mas.udeOrUname!=null">
+ 		    AND (v.u_name LIKE CONCAT('%',#{mas.udeOrUname},'%')   OR v.card_no LIKE CONCAT('%',#{mas.udeOrUname},'%') )
+ 		</if>
+ 		<if test="mas.dId==null and mas.didOrDname!=null">
+ 	    	    AND (v.d_id LIKE CONCAT('%',#{mas.didOrDname},'%')   OR v.d_name LIKE CONCAT('%',#{mas.didOrDname},'%') )
+ 	    	</if>
+ 		ORDER BY v.a_time desc
+ 		limit #{page},#{size}
+ 	</where>
+ 	</select>
+ 	<!-- 于5-24修改sql:状态为0,已办理 -->
+ 	<select id="selectUsListCount" parameterType="com.yxysoft.base.AcceptToolBean" resultType="_int">
+ 	SELECT count(1)  FROM view_qxzw_bus_applys v
+ 	<where>
+ 		<if test="mas.dId!=null">
+ 		     AND v.d_id=#{mas.dId}
+ 		</if>
+ 		<if test="mas.uId!=null">
+ 			AND v.u_id=#{mas.uId}
+ 		</if>
+ 		<if test="mas.state==null">
+ 		    AND v.state  in(0,4,7)
+ 		</if>
+ 		<if test="mas.state!=null">
+ 		    AND v.state=#{mas.state}
+ 		</if>
+ 		<if test="mas.befDate!=null and mas.aftDate!=null">
+ 		
+ 		AND v.a_time BETWEEN STR_TO_DATE(#{mas.befDate},'%Y-%m-%d') AND  DATE_ADD(STR_TO_DATE(#{mas.aftDate},'%Y-%m-%d'),INTERVAL 1 DAY)
+ 		</if>
+ 		 
+ 		<if test="mas.befDate==null or mas.aftDate==null">
+ 		   AND  PERIOD_DIFF( DATE_FORMAT( NOW( ) , '%Y%m' ) , DATE_FORMAT( v.a_time, '%Y%m' ) ) =0
+ 		</if>
+ 	
+ 		<if test="mas.sidOrSname!=null">
+ 		    AND (v.s_id LIKE CONCAT('%',#{mas.sidOrSname},'%')   OR v.s_name LIKE CONCAT('%',#{mas.sidOrSname},'%') )
+ 		</if>
+ 		
+ 		<if test="mas.udeOrUname!=null">
+ 		    AND (v.u_name LIKE CONCAT('%',#{mas.udeOrUname},'%')   OR v.card_no LIKE CONCAT('%',#{mas.udeOrUname},'%') )
+ 		</if>
+ 		
+ 		<if test="mas.dId==null and mas.didOrDname!=null">
+ 	    	    AND (v.d_id LIKE CONCAT('%',#{mas.didOrDname},'%')   OR v.d_name LIKE CONCAT('%',#{mas.didOrDname},'%') )
+ 	    	</if>
+ 	</where>
+ 	</select>
+ 	
+ 	
+ 	
+ 	<!-- 于5-24修改sql:状态为0,已办理 -->
+ 	<select id="statisCount" parameterType="com.yxysoft.base.AcceptToolBean"  resultType="java.util.HashMap">
+ 		SELECT 
+		COUNT(1) couobj,
+		(SELECT COUNT(1) FROM view_qxzw_bus_applys WHERE STATE=2  AND d_id=#{mas.dId} ) counow,
+		(SELECT COUNT(1) FROM qxzw_bus_list busli JOIN  qxzw_bus_obj_rel objrel ON busli.s_id=objrel.s_id
+		WHERE busli.d_id=#{mas.dId}) coubus,
+		(SELECT COUNT(DISTINCT s_id) FROM  view_qxzw_bus_applys WHERE state in(0,4,7) AND d_id=#{mas.dId} ) cousid
+		FROM view_qxzw_bus_applys v 
+		WHERE v.d_id=#{mas.dId} and v.state 
+		<!-- not in(1)-->
+		in(0,4,7)
+ 	</select>
+ 	
+ 	<select id="statisCountG" parameterType="com.yxysoft.base.AcceptToolBean"  resultType="java.util.HashMap">
+ 		SELECT 
+		COUNT(1) couobj,
+		(SELECT COUNT(1) FROM qxzw_users WHERE STATE=0) couuser,
+		(SELECT COUNT(1) FROM qxzw_bus_list busli JOIN  qxzw_bus_obj_rel objrel ON busli.s_id=objrel.s_id) coubus,
+		(SELECT COUNT(DISTINCT s_id) FROM  view_qxzw_bus_applys WHERE state in(0,4,7)  ) cousid
+		FROM view_qxzw_bus_applys v  WHERE v.state 
+		<!--not in(1)-->
+		in(0,4,7)
+ 	</select>
+ 	
+ 	<select id="statisMonthCount" resultType="java.util.HashMap" parameterType="com.yxysoft.base.AcceptToolBean">
+ 		SELECT DATE_FORMAT(a_time,'%Y-%m-%d') aTime,COUNT(DATE_FORMAT(a_time,'%Y-%m-%d')) aTimeNum FROM view_qxzw_bus_applys 
+		<where>
+		    1=1
+		    
+			<if test="mas.befDate==null or mas.aftDate==null">
+				AND PERIOD_DIFF( DATE_FORMAT( NOW( ),'%Y%m' ),DATE_FORMAT( a_time, '%Y%m' ))=0
+			</if>
+		
+			<if test="mas.befDate!=null and mas.aftDate!=null">
+				AND  a_time BETWEEN STR_TO_DATE(#{mas.befDate},'%Y-%m-%d') AND  DATE_ADD(STR_TO_DATE(#{mas.aftDate},'%Y-%m-%d'),INTERVAL 1 DAY)
+			</if>
+			<if test="mas.dId!=null">
+			   AND d_id=#{mas.dId}
+			</if>
+			AND state  in(0,4,7)
+		</where>
+		GROUP BY aTime
+		ORDER BY aTime desc
+ 	</select>
+ 	
+ 	
+ 	<select id="statisUsCount" parameterType="com.yxysoft.base.AcceptToolBean" resultType="com.yxysoft.base.AcceptManage">
+ 	SELECT   u_name uName,count(u_id) countNum  FROM view_qxzw_bus_applys 
+ 	<where>
+ 		<if test="mas.dId!=null">
+ 		     AND d_id=#{mas.dId}
+ 		</if>
+ 		<if test="mas.befDate!=null and mas.aftDate!=null">
+ 			AND  a_time BETWEEN STR_TO_DATE(#{mas.befDate},'%Y-%m-%d') AND  DATE_ADD(STR_TO_DATE(#{mas.aftDate},'%Y-%m-%d'),INTERVAL 1 DAY)
+ 		</if>
+ 		 
+ 		<if test="mas.befDate==null or mas.aftDate==null">
+ 		   AND PERIOD_DIFF( DATE_FORMAT( NOW( ) , '%Y%m' ) , DATE_FORMAT( a_time, '%Y%m' ) ) =0
+ 		</if>
+ 		
+ 		<if test="mas.uId!=null">
+ 			AND u_id=#{mas.uId}
+ 		</if>
+ 		<if test="mas.state!=null">
+ 		    AND state=#{mas.state}
+ 		</if>
+ 		<if test="mas.state==null">
+ 		    AND state  in(0,4,7)
+ 		</if>
+ 	</where>
+ 		GROUP BY u_id
+ 		ORDER BY a_time 
+ 	</select>
+ 	
+ 	<select id="statisPersCount" resultType="java.util.HashMap" parameterType="com.yxysoft.base.AcceptToolBean">
+ 		select  r.acc_code acccode,count(distinct  r.a_id) acccodenNum from view_qxzw_bus_applys v  join  qxzw_bus_accept_receipt r on v.a_id=r.a_id 
+		<where>
+		v.state  in(0,4,7) 
+		   <if test="mas.dId!=null">
+		    AND v.d_id=#{mas.dId}
+		   </if>
+		   <if test="mas.befDate!=null and mas.aftDate!=null">
+ 			AND  v.a_time BETWEEN STR_TO_DATE(#{mas.befDate},'%Y-%m-%d') AND  DATE_ADD(STR_TO_DATE(#{mas.aftDate},'%Y-%m-%d'),INTERVAL 1 DAY)
+ 		   </if>
+ 		    
+ 		   <if test="mas.befDate==null or mas.aftDate==null">
+ 		   AND PERIOD_DIFF( DATE_FORMAT( NOW( ) , '%Y%m' ) , DATE_FORMAT( v.a_time, '%Y%m' ) ) =0
+ 		   </if>
+ 		   
+		</where>
+		group by r.acc_code 
+ 	</select>
+ 	
+ 	<select id="statisBusList" resultType="com.yxysoft.base.AcceptManage" parameterType="com.yxysoft.base.AcceptToolBean">
+ 	SELECT v.s_id sId,
+   (SELECT 
+    d_name 
+    FROM
+    qxzw_departments 
+    WHERE d_id = v.d_id) dName,
+     v.s_name sName,
+     v.d_id dId,
+     v.state state,
+     count(v.s_id) countNum
+	FROM
+    view_qxzw_bus_applys v
+ <where>
+    <if test="mas.dId!=null">
+      AND v.d_id = #{mas.dId} 
+    </if>
+    <if test="mas.state!=null">
+      AND v.state =#{mas.state} 
+    </if>
+    <if test="mas.state==null">
+     AND v.state  in(0,4,7)
+    </if>
+    <if test="mas.befDate!=null and mas.aftDate!=null">
+      AND  v.a_time BETWEEN STR_TO_DATE(#{mas.befDate},'%Y-%m-%d') AND  DATE_ADD(STR_TO_DATE(#{mas.aftDate},'%Y-%m-%d'),INTERVAL 1 DAY)
+    </if>
+     
+    <if test="mas.befDate==null or mas.aftDate==null">
+ 	  AND PERIOD_DIFF( DATE_FORMAT( NOW( ) , '%Y%m' ) , DATE_FORMAT( v.a_time, '%Y%m' ) ) =0
+ 	</if>
+ 	
+ </where> 
+   GROUP by v.s_id 
+ </select>
+ 	
+ 	<!-- 统计所有街道和局的待办信息 -->
+ 	<select id="statisDepCount" resultType="java.util.HashMap">
+ 		SELECT  dep.d_id dId,dep.d_name dName,dep.p_d_id pdId,(SELECT COUNT(1) FROM view_qxzw_bus_applys WHERE d_id=dep.`d_id` AND state=2) countNum
+ 		 FROM qxzw_departments dep 
+ 	</select>
+ 	<!-- 街道发生率 -->
+ 	<select id="statisStreetRates" parameterType="com.yxysoft.base.AcceptToolBean" resultType="java.util.HashMap">
+ SELECT t2.d_id dId,t2.p_d_id pDId,t2.d_name dName,t2.nn allCount ,IFNULL(t3.nnn,0) acceptCount , IFNULL(t3.nnn/t2.nn,0) rate FROM (
+	SELECT 
+  d.d_id,
+  d.p_d_id,
+  d.d_name,
+  COUNT(*) nn
+FROM
+  qxzw_bus_list t,
+  qxzw_departments d 
+WHERE t.d_id = d.d_id 
+  AND d.p_d_id = 3
+  AND t.p_s_id != 0 
+GROUP BY t.d_id ) t2
+LEFT JOIN
+(
+SELECT 
+  t1.d_id,
+  t1.d_name,
+  COUNT(*) nnn
+FROM
+  (SELECT 
+    d.d_id,
+    d.d_name,
+    t.s_name,
+    COUNT(*) 
+  FROM
+    view_qxzw_bus_applys t,
+    qxzw_departments d 
+  WHERE t.d_id = d.d_id 
+    AND d.p_d_id = 3
+    AND t.state IN (0,4,7)
+  GROUP BY d.d_name,
+    t.s_name) t1 GROUP BY t1.d_name) t3 ON t2.d_id = t3.d_id
+    <where>
+	  		<if test="mas.dId!=null">
+	  		  t2.d_id=#{mas.dId}
+	  		</if>
+	  </where>
+ 	</select>
+ 	<!-- 部门发生率 -->
+ 	<select id="statisDepRates" parameterType="com.yxysoft.base.AcceptToolBean" resultType="java.util.HashMap">
+ SELECT t2.d_id dId,t2.p_d_id pDId,t2.d_name dName,t2.nn allCount ,IFNULL(t3.nnn,0) acceptCount , IFNULL(t3.nnn/t2.nn,0) rate FROM (
+	SELECT 
+	  d.d_id,
+	  d.p_d_id,
+	  d.d_name,
+	  COUNT(*) nn
+	FROM
+	  qxzw_bus_list t,
+	  qxzw_departments d 
+	WHERE t.d_id = d.d_id 
+	  AND d.p_d_id = 2
+	  #AND t.p_s_id != 0 
+	GROUP BY t.d_id ) t2
+	LEFT JOIN
+	(
+	SELECT 
+	  t1.d_id,
+	  t1.d_name,
+	  COUNT(*) nnn
+	FROM
+	  (SELECT 
+	    d.d_id,
+	    d.d_name,
+	    t.s_name,
+	    COUNT(*) 
+	  FROM
+	    view_qxzw_bus_applys t,
+	    qxzw_departments d 
+	  WHERE t.d_id = d.d_id 
+	    AND d.p_d_id = 2
+	    AND t.state IN (0,4,7)
+	  GROUP BY d.d_name,
+	    t.s_name) t1 GROUP BY t1.d_name) t3 ON t2.d_id = t3.d_id
+	  <where>
+	  		<if test="mas.dId!=null">
+	  		  t2.d_id=#{mas.dId}
+	  		</if>
+	  </where>
+ 	</select>
+ 	
+ 	<select id="statisLineList" parameterType="com.yxysoft.base.AcceptToolBean" resultType="java.util.HashMap">
+ 	   SELECT d_id dId,d_name dName,
+		SUM(CASE WHEN MONTH(a_time) =1   THEN 1 ELSE 0 END) 'january',   
+		SUM(CASE WHEN MONTH(a_time) =2    THEN 1 ELSE 0 END) 'feburary',
+		SUM(CASE WHEN MONTH(a_time) =3    THEN 1 ELSE 0 END) 'march',
+		SUM(CASE WHEN MONTH(a_time) =4    THEN 1 ELSE 0 END) 'april',
+		SUM(CASE WHEN MONTH(a_time) =5    THEN 1 ELSE 0 END) 'may',
+		SUM(CASE WHEN MONTH(a_time) =6    THEN 1 ELSE 0 END) 'june',
+		SUM(CASE WHEN MONTH(a_time) =7    THEN 1 ELSE 0 END) 'july',
+		SUM(CASE WHEN MONTH(a_time) =8    THEN 1 ELSE 0 END) 'august',
+		SUM(CASE WHEN MONTH(a_time) =9    THEN 1 ELSE 0 END) 'september',
+		SUM(CASE WHEN MONTH(a_time) =10   THEN 1 ELSE 0 END) 'october',
+		SUM(CASE WHEN MONTH(a_time) =11   THEN 1 ELSE 0 END) 'november',
+		SUM(CASE WHEN MONTH(a_time) =12   THEN 1 ELSE 0 END) 'december'
+		FROM view_qxzw_bus_applys WHERE state in(0,4,7)  and d_id in 
+		<foreach item="item" index="index" collection="mas.didlist" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+		GROUP BY d_id 
+		
+		<!-- in(0,4,7) -->
+ 	</select>
+ 	
+</mapper>

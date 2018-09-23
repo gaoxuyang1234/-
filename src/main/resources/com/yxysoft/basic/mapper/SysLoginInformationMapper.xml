@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxysoft.basic.mapper.SysLoginInformationMapper">
+  <resultMap id="BaseResultMap" type="com.yxysoft.basic.model.SysLoginInformation">
+    <constructor>
+      <idArg column="login_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="administrator_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="login_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="state" javaType="java.lang.Integer" jdbcType="INTEGER" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    login_id, administrator_id, login_time, state
+  </sql>
+  <select id="selectByExample" parameterType="com.yxysoft.basic.model.SysLoginInformationExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_login_information
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_login_information
+    where login_id = #{loginId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_login_information
+    where login_id = #{loginId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.yxysoft.basic.model.SysLoginInformationExample">
+    delete from sys_login_information
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.yxysoft.basic.model.SysLoginInformation">
+    <selectKey keyProperty="loginId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_login_information (administrator_id, login_time, state
+      )
+    values (#{administratorId,jdbcType=INTEGER}, #{loginTime,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yxysoft.basic.model.SysLoginInformation">
+    <selectKey keyProperty="loginId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_login_information
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="administratorId != null">
+        administrator_id,
+      </if>
+      <if test="loginTime != null">
+        login_time,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="administratorId != null">
+        #{administratorId,jdbcType=INTEGER},
+      </if>
+      <if test="loginTime != null">
+        #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.yxysoft.basic.model.SysLoginInformationExample" resultType="java.lang.Long">
+    select count(*) from sys_login_information
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update sys_login_information
+    <set>
+      <if test="record.loginId != null">
+        login_id = #{record.loginId,jdbcType=INTEGER},
+      </if>
+      <if test="record.administratorId != null">
+        administrator_id = #{record.administratorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.loginTime != null">
+        login_time = #{record.loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.state != null">
+        state = #{record.state,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update sys_login_information
+    set login_id = #{record.loginId,jdbcType=INTEGER},
+      administrator_id = #{record.administratorId,jdbcType=INTEGER},
+      login_time = #{record.loginTime,jdbcType=TIMESTAMP},
+      state = #{record.state,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yxysoft.basic.model.SysLoginInformation">
+    update sys_login_information
+    <set>
+      <if test="administratorId != null">
+        administrator_id = #{administratorId,jdbcType=INTEGER},
+      </if>
+      <if test="loginTime != null">
+        login_time = #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
+    </set>
+    where login_id = #{loginId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yxysoft.basic.model.SysLoginInformation">
+    update sys_login_information
+    set administrator_id = #{administratorId,jdbcType=INTEGER},
+      login_time = #{loginTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=INTEGER}
+    where login_id = #{loginId,jdbcType=INTEGER}
+  </update>
+</mapper>

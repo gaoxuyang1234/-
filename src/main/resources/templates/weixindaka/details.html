@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>详情</title>
+
+  <!-- Set render engine for 360 browser -->
+  <meta name="renderer" content="webkit">
+
+  <!-- No Baidu Siteapp-->
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+  <link rel="icon" type="image/png" href="../../static/weixindaka/assets/i/favicon.png">
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="icon" sizes="192x192" href="../../static/weixindaka/assets/i/app-icon72x72@2x.png">
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+  <link rel="apple-touch-icon-precomposed" href="../../static/weixindaka/assets/i/app-icon72x72@2x.png">
+
+  <!-- Tile icon for Win8 (144x144 + tile color) -->
+  <meta name="msapplication-TileImage" content="assets/i/app-icon72x72@2x.png">
+  <meta name="msapplication-TileColor" content="#0e90d2">
+
+  <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+  <!--
+  <link rel="canonical" href="http://www.example.com/">
+  -->
+
+  <link rel="stylesheet" href="../../static/weixindaka/assets/css/amazeui.min.css">
+  <link rel="stylesheet" href="../../static/weixindaka/assets/css/app.css">
+
+  <!--自建css样式-->
+  	<link rel="stylesheet" type="text/css" href="../../static/weixindaka/css/wechat-signin.css"/>
+
+  	<!-- 引入腾讯模块CDN -->
+<script  type="text/javascript" src="https://3gimg.qq.com/lightmap/components/geolocation/geolocation.min.js" ></script>
+
+</head>
+<body>
+<!--[if lte IE 9]>
+<p class="browsehappy">你正在使用<strong>过时</strong>的浏览器，Amaze UI 暂不支持。 请 <a
+  href="http://browsehappy.com/" target="_blank">升级浏览器</a>
+  以获得更好的体验！</p>
+<![endif]-->
+<!--顶部-->
+	<header class="am-u-sm-12 am-padding-0 am-margin-0">
+		<p>详情</p>
+	</header>
+<!--内容-->
+	<section class="mumber-info">
+		<img src="../../static/weixindaka/img/F373DDABEBAE6197652B11E77DD7AE40.gif" width="30%">
+		<div class="name-department">
+			<p id="uName"></p>
+			<p id="department"></p>
+		</div>
+		<select class="res-date" id="sTime" >
+
+			<option value="2018-1">2018年-1月</option>
+			<option value="2018-2">2018年-2月</option>
+			<option value="2018-3">2018年-3月</option>
+			<option value="2018-4">2018年-4月</option>
+			<option value="2018-5">2018年-5月</option>
+			<option value="2018-6">2018年-6月</option>
+			<option value="2018-7">2018年-7月</option>
+			<option value="2018-8">2018年-8月</option>
+			<option value="2018-9">2018年-9月</option>
+			<option value="2018-10">2018年-10月</option>
+			<option value="2018-11">2018年-11月</option>
+			
+			<option value="2018-12">2018年-12月</option>
+		
+		</select>
+
+	</section>
+	<section class="work-date">
+		<div class="work-left">
+			<div class="work-date-option">
+				<img src="../../static/weixindaka/img/u31.png"/><p >出勤天数：</p>
+				<span id="cq"></span>
+			</div>
+			<div class="work-date-option">
+				<img src="../../static/weixindaka/img/u33.png"/><p >休息：</p>
+				<span id="rest"></span>
+			</div>
+			<div class="work-date-option">
+				<img src="../../static/weixindaka/img/u41.png"/><p ><a onclick="cdjilu()">迟到：</a></p>
+				<span id="cd"></span>
+			</div>
+			<div class="work-date-option">
+				<img src="../../static/weixindaka/img/u58.png"/><p  ><a onclick="ztjilu()">早退：</a></p>
+				<span id="zt"></span>
+			</div>
+		</div>
+		<div class="work-right">
+			<div class="work-date-option">
+				<img src="../../static/weixindaka/img/u31.png"/><p >正常打卡：</p>
+				<span id="zc"></span>
+			</div>
+			<div class="work-date-option">
+				<img src="../../static/weixindaka/img/u33.png"/><p ><a onclick="qjjilu()">请假：</a></p>
+				<span id="qj"></span>
+			</div>
+			<div class="work-date-option">
+				<img src="../../static/weixindaka/img/u41.png"/><p ><a onclick="qkjilu()">缺卡：</a></p>
+				<span id="qk"></span>
+			</div>
+			<div class="work-date-option" >
+				<img src="../../static/weixindaka/img/u58.png"/><p ><a onclick="kgjilu()">旷工：</a></p>
+				<span id="kg"></span>
+			</div>
+		</div>
+	</section>
+	<section class="record">
+		<div class="record-option"  id="liebiao">请点击相关信息</div>
+		<div class="record-day" id="tbs">
+
+		</div>
+	</section>
+<!--底部-->
+
+<!--[if lt IE 9]>
+<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+<script src="../../static/weixindaka/assets/js/amazeui.ie8polyfill.min.js"></script>
+<![endif]-->
+
+<!--[if (gte IE 9)|!(IE)]><!-->
+<script src="../../static/weixindaka/assets/js/jquery.min.js"></script>
+<!--<![endif]-->
+<script src="../../static/weixindaka/assets/js/amazeui.min.js"></script>
+
+<script src="../../static/weixindaka/js/details.js"></script>
+</body>
+</html>

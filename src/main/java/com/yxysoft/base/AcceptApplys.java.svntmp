@@ -1,0 +1,349 @@
+package com.yxysoft.base;
+
+import java.util.List;
+
+/**
+ * 用于受理端接收数据的实体类
+ */
+public class AcceptApplys {
+
+	/**
+	 * 用户Id(qxzw_users)
+	 */
+	private Integer uId;
+	/**
+	 * 用户身份证(qxzw_users)
+	 */
+	private String cardNo;
+	/**
+	 * 用户的名称(qxzw_users)
+	 */
+	private String uName;
+	
+	/**
+	 * 用户的手机号码(qxzw_users)
+	 */
+	private String mobile;
+	
+	/**
+	 * 业务事项Id(qxzw_bus_list)
+	 */
+	private Integer sId;
+	
+	/**
+	 * 部门编码(qxzw_bus_list)
+	 */
+	private Integer dId;
+	
+	/**
+	 * 业务事项名称(qxzw_bus_list)
+	 */
+	private String sName;
+	
+	/**
+	 * 业务申请Id(qxzw_bus_applys)
+	 */
+	private Integer aId;
+	
+	/**
+	 * 业务申请提交的时间(qxzw_bus_applys)
+	 */
+	private String aTime;
+	
+	/**
+	 * 数量(非数据库字段)
+	 */
+	private Integer num;
+	
+	/**
+	 * 业务对象信息(非数据库字段)
+	 */
+	private String agent;
+	
+	/**
+	 * 判断状态(用于操作显示条目)
+	 */
+    private String state;
+    /**
+     * 判断是所返回的业务状态
+     */
+    private List<Integer> inx;
+    /**
+     * 执行检索待办(当日)或已完成(所有),
+     */
+    private String status;
+    //---------------
+    /**
+	 * 回执的时间
+	 */
+	private String receiptTime;
+	/**
+	 * 受理端用户Id
+	 */
+	private Integer accCode;
+	
+	/**
+	 * 节点Id
+	 */
+	private Integer accnodeId;
+	/**
+	 * 当前节点名称
+	 */
+	private String accnodeName;
+	/**
+	 * 部门名称
+	 */
+    private String dName;
+	
+    /**
+     * 回执主键
+     */
+    private Integer receiptId;
+    /**
+     * 流程类型主键
+     */
+    private Integer flowTypeId;
+    /**
+     * 记录业务申请是否邮递 0:不存在,1-否,2-是
+     */
+    private Integer mail;
+    
+    /**
+     * 返回的工作日时间
+     */
+    private Integer endDate;
+    /**
+     * 回执的路径
+     * @return
+     */
+    private String receiptPath;
+    
+    /**
+     * 判断这个用户是否已经登录
+     */
+    private String isOnline;
+    
+	public Integer getuId() {
+		return uId;
+	}
+
+	public void setuId(Integer uId) {
+		this.uId = uId;
+	}
+
+	public Integer getsId() {
+		return sId;
+	}
+
+	public void setsId(Integer sId) {
+		this.sId = sId;
+	}
+
+	public Integer getdId() {
+		return dId;
+	}
+
+	public void setdId(Integer dId) {
+		this.dId = dId;
+	}
+
+	public String getsName() {
+		return sName;
+	}
+
+	public void setsName(String sName) {
+		this.sName = sName;
+	}
+
+	public Integer getaId() {
+		return aId;
+	}
+
+	public void setaId(Integer aId) {
+		this.aId = aId;
+	}
+
+	public String getaTime() {
+		return aTime;
+	}
+
+	public void setaTime(String aTime) {
+		this.aTime = aTime;
+	}
+
+	public Integer getNum() {
+		return num;
+	}
+
+	public void setNum(Integer num) {
+		this.num = num;
+	}
+
+	public String getAgent() {
+		return agent;
+	}
+
+	public void setAgent(String agent) {
+		this.agent = agent;
+	}
+
+	public String getCardNo() {
+		return cardNo;
+	}
+
+	public void setCardNo(String cardNo) {
+		this.cardNo = cardNo;
+	}
+
+	public String getuName() {
+		return uName;
+	}
+
+	public void setuName(String uName) {
+		this.uName = uName;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getReceiptTime() {
+		return receiptTime;
+	}
+
+	public void setReceiptTime(String receiptTime) {
+		this.receiptTime = receiptTime;
+	}
+
+	public String getAccnodeName() {
+		return accnodeName;
+	}
+
+	public void setAccnodeName(String accnodeName) {
+		this.accnodeName = accnodeName;
+	}
+
+	public String getdName() {
+		return dName;
+	}
+
+	public void setdName(String dName) {
+		this.dName = dName;
+	}
+
+	public Integer getAccnodeId() {
+		return accnodeId;
+	}
+
+	public void setAccnodeId(Integer accnodeId) {
+		this.accnodeId = accnodeId;
+	}
+
+	public Integer getAccCode() {
+		return accCode;
+	}
+
+	public void setAccCode(Integer accCode) {
+		this.accCode = accCode;
+	}
+
+	public Integer getReceiptId() {
+		return receiptId;
+	}
+
+	public void setReceiptId(Integer receiptId) {
+		this.receiptId = receiptId;
+	}
+
+	public Integer getFlowTypeId() {
+		return flowTypeId;
+	}
+
+	public void setFlowTypeId(Integer flowTypeId) {
+		this.flowTypeId = flowTypeId;
+	}
+
+	public Integer getMail() {
+		return mail;
+	}
+
+	public void setMail(Integer mail) {
+		this.mail = mail;
+	}
+
+	public Integer getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Integer endDate) {
+		this.endDate = endDate;
+	}
+
+	public String getReceiptPath() {
+		return receiptPath;
+	}
+
+	public void setReceiptPath(String receiptPath) {
+		this.receiptPath = receiptPath;
+	}
+
+	
+
+	public List<Integer> getInx() {
+		return inx;
+	}
+
+	public void setInx(List<Integer> inx) {
+		this.inx = inx;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getIsOnline() {
+		return isOnline;
+	}
+
+	public void setIsOnline(String isOnline) {
+		this.isOnline = isOnline;
+	}
+
+	
+	
+	
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}

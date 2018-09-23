@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>签到</title>
+
+  <!-- Set render engine for 360 browser -->
+  <meta name="renderer" content="webkit">
+
+  <!-- No Baidu Siteapp-->
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+  <link rel="icon" type="image/png" href="../../static/assets/i/favicon.png">
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="icon" sizes="192x192" href="../../static/assets/i/app-icon72x72@2x.png">
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+  <link rel="apple-touch-icon-precomposed" href="../../static/assets/i/app-icon72x72@2x.png">
+
+  <!-- Tile icon for Win8 (144x144 + tile color) -->
+  <meta name="msapplication-TileImage" content="../../static/assets/i/app-icon72x72@2x.png">
+  <meta name="msapplication-TileColor" content="#0e90d2">
+
+  <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+  <!--
+  <link rel="canonical" href="http://www.example.com/">
+  -->
+
+  <link rel="stylesheet" href="../../static/assets/css/amazeui.min.css">
+  <link rel="stylesheet" href="../../static/assets/css/app.css">
+  
+  <!--自建css样式-->
+  	<link rel="stylesheet" type="text/css" href="../../static/css/wechat-signin.css"/>
+  	
+  	<!-- 引入腾讯模块CDN -->
+<script  type="text/javascript" src="https://3gimg.qq.com/lightmap/components/geolocation/geolocation.min.js" ></script>
+
+
+
+
+</head>
+
+
+<body>
+
+
+
+
+
+<!--[if lte IE 9]>
+<p class="browsehappy">你正在使用<strong>过时</strong>的浏览器，Amaze UI 暂不支持。 请 <a
+  href="http://browsehappy.com/" target="_blank">升级浏览器</a>
+  以获得更好的体验！</p>
+<![endif]-->
+<!--顶部-->
+	<header class="am-u-sm-12 am-padding-0 am-margin-0">
+		<p>今日打卡情况</p>
+	</header>
+<!--内容-->
+<form action="/syspunchin/add"  method="post"  enctype="multipart/form-data">
+	<section class="signin-info">
+		<p>姓名：<span id="name"  name="userName">二哈</span></p>
+		<!-- 隐藏一个Userid -->
+		<input  id="uid" type="hidden" value="" name="userId">
+		<!-- 通过js  获得的地址鱼时间 通过name不可以获得 所以 再将值赋给input 隐藏域 -->
+		 <input type="hidden" name="punchPlace" id="locale2"> 
+	
+		
+		<p>当前时间：<span id="time" name=""></span></p>
+		<p>当前地点：<span id="locale"name=""></span></p>
+		<p>班次：
+			<select id="classes"  name="shiftName" onchange="shangban()">
+				<option value="0" >---请选择班次---</option>
+				<option value="正常班" name="正常班">全天班（9：00-18：00）</option>
+				<option value="早班"  name="早班">早班（8：30-14：30）</option>
+				<option value="晚班" name="晚班">晚班（14:30-20:00）</option>
+			</select>
+		</p>
+		<p>
+			<label for="file">上传照片：<img src="../../static/img/upload-pic.png"></label>
+			<input accept="image/png,image/jpeg,image/gif" type="file" id="file" name="PicturePath" style="display: none"/>
+		</p>
+		<div id="image">
+		    <img src="" style="width: 500px"/>
+		</div>
+		<p>备注：<textarea  placeholder="签到"  name="punchReason"></textarea></p>
+	</section>
+	<button type="submit" id="normal" disabled="disabled" name="signInState" value="1">正常签到</button>
+	<button type="submit" id="late" disabled="disabled" name="signInState" value="2">迟到签到</button>
+	
+</form>	
+<!--底部-->
+	
+<!--[if lt IE 9]>
+<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+<script src="assets/js/amazeui.ie8polyfill.min.js"></script>
+<![endif]-->
+
+<!--[if (gte IE 9)|!(IE)]><!-->
+<script src="../../static/assets/js/jquery.min.js"></script>
+<!--<![endif]-->
+<script src="../../static/assets/js/amazeui.min.js"></script>
+</body>
+</html>
+<script type="text/javascript">
+	//上传图片预览
+	document.getElementById('file').onchange = function() {
+    var imgFile = this.files[0];
+    var fr = new FileReader();
+    fr.onload = function() {
+        document.getElementById('image').getElementsByTagName('img')[0].src = fr.result;
+    };
+    fr.readAsDataURL(imgFile);
+  };
+//	获取当前时间
+	window.onload=function(){
+	  setInterval(function(){
+		   var date=new Date();
+		   var year=date.getFullYear(); //获取当前年份
+		   var mon=date.getMonth()+1;//获取当前月份
+		   if(mon>=1&&mon<=9){mon="0"+mon};
+		   var day=date.getDate(); //获取当前日
+		   if(day>=1&&day<=9){day="0"+day};
+		   var h=date.getHours(); //获取小时
+		   if(h>=0&&h<=9){h="0"+h};
+		   var m=date.getMinutes(); //获取分钟
+		   if(m>=0&&m<=9){m="0"+m};
+		   var s=date.getSeconds();
+		   if(s>=0&&s<=9){s="0"+s};//获取秒
+		   var today=year+'-'+mon+'-'+day;
+		   now=h+':'+m+':'+s;
+		   $('#time').html(today+' '+now);
+		   $('#time2').val(today+' '+now);
+		},1000)
+	}
+//班次选择
+	function shangban(){
+		var classes=$("#classes").find("option:selected").val();
+//	正常班
+		if(classes=="正常班"){
+			if(now<="09:00:00"){
+				$("#normal").attr("disabled",false).addClass("click");
+				$("#late").attr("disabled",true).removeClass("click");
+			}else{
+				$("#late").attr("disabled",false).addClass("click");
+				$("#normal").attr("disabled",true).removeClass("click");
+			}
+		}
+//	早班
+		else if(classes=="早班"){
+			if(now<="08:30:00"){
+				$("#normal").attr("disabled",false).addClass("click");
+				$("#late").attr("disabled",true).removeClass("click");
+			}else{
+				$("#late").attr("disabled",false).addClass("click");
+				$("#normal").attr("disabled",true).removeClass("click");
+			}
+		}
+//		晚班
+		else if(classes=="晚班"){
+			if(now<="14:30:00"){
+				$("#normal").attr("disabled",false).addClass("click");
+				$("#late").attr("disabled",true).removeClass("click");
+			}else{
+				$("#late").attr("disabled",false).addClass("click");
+				$("#normal").attr("disabled",true).removeClass("click");
+			}
+		}
+//未选择班次
+		else{
+			$("#normal").attr("disabled",true).removeClass("click");
+			$("#late").attr("disabled",true).removeClass("click");
+		}
+	}
+	//  班次选择
+
+</script>
+
+
+
+<script type="text/javascript">
+
+//缓存
+  let uid=localStorage.getItem("uid");
+   
+$(document).ready(function(){
+
+$("#uid").val(uid);
+
+   $.ajax({
+   url:"/syspunchin/checkpunch2",
+   type:"post",
+   datatype:"json",
+   data:{uid:uid},
+   success:function(data){
+   $("#name").html(data.userName);
+   }
+   })
+   
+   
+
+
+
+});
+
+</script>
+		
+	
+
+<!--获取当前位置-百度地图api-->
+<script src="http://api.map.baidu.com/api?v=2.0&ak=pv2lfQntHXoYi6vFN4ZRr9scZDltjC6r"></script>
+<script type="text/javascript">
+    //获取当前位置
+    var geolocation = new BMap.Geolocation();
+    geolocation.getCurrentPosition(function(r){
+        if(this.getStatus() == BMAP_STATUS_SUCCESS){
+            mk = new BMap.Marker(r.point);
+            getAddress(r.point);
+        }else {
+            alert('failed'+this.getStatus());
+        }
+    });
+    //获取地址信息，设置地址label
+    function getAddress(point){
+        var gc = new BMap.Geocoder();
+        gc.getLocation(point, function(rs){
+            var addComp = rs.addressComponents;
+            var address =  addComp.province +  addComp.city + addComp.district + addComp.street + addComp.streetNumber;//获取地址
+            $('#locale').html(address);
+            $('#locale2').val(address);
+        });
+
+    }
+</script>    

@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxysoft.basic.mapper.SysShiftMapper">
+  <resultMap id="BaseResultMap" type="com.yxysoft.basic.model.SysShift">
+    <constructor>
+      <idArg column="shift_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="shift_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="start_hour_time" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="start_minute_time" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="end_hour_time" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="end_minute_time" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="create_user_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="state" javaType="java.lang.Integer" jdbcType="INTEGER" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    shift_id, shift_name, start_hour_time, start_minute_time, end_hour_time, end_minute_time, 
+    create_user_id, create_time, state
+  </sql>
+  <select id="selectByExample" parameterType="com.yxysoft.basic.model.SysShiftExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_shift
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_shift
+    where shift_id = #{shiftId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_shift
+    where shift_id = #{shiftId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.yxysoft.basic.model.SysShiftExample">
+    delete from sys_shift
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.yxysoft.basic.model.SysShift">
+    <selectKey keyProperty="shiftId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_shift (shift_name, start_hour_time, start_minute_time, 
+      end_hour_time, end_minute_time, create_user_id, 
+      create_time, state)
+    values (#{shiftName,jdbcType=VARCHAR}, #{startHourTime,jdbcType=INTEGER}, #{startMinuteTime,jdbcType=INTEGER}, 
+      #{endHourTime,jdbcType=INTEGER}, #{endMinuteTime,jdbcType=INTEGER}, #{createUserId,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yxysoft.basic.model.SysShift">
+    <selectKey keyProperty="shiftId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_shift
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="shiftName != null">
+        shift_name,
+      </if>
+      <if test="startHourTime != null">
+        start_hour_time,
+      </if>
+      <if test="startMinuteTime != null">
+        start_minute_time,
+      </if>
+      <if test="endHourTime != null">
+        end_hour_time,
+      </if>
+      <if test="endMinuteTime != null">
+        end_minute_time,
+      </if>
+      <if test="createUserId != null">
+        create_user_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="shiftName != null">
+        #{shiftName,jdbcType=VARCHAR},
+      </if>
+      <if test="startHourTime != null">
+        #{startHourTime,jdbcType=INTEGER},
+      </if>
+      <if test="startMinuteTime != null">
+        #{startMinuteTime,jdbcType=INTEGER},
+      </if>
+      <if test="endHourTime != null">
+        #{endHourTime,jdbcType=INTEGER},
+      </if>
+      <if test="endMinuteTime != null">
+        #{endMinuteTime,jdbcType=INTEGER},
+      </if>
+      <if test="createUserId != null">
+        #{createUserId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.yxysoft.basic.model.SysShiftExample" resultType="java.lang.Long">
+    select count(*) from sys_shift
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update sys_shift
+    <set>
+      <if test="record.shiftId != null">
+        shift_id = #{record.shiftId,jdbcType=INTEGER},
+      </if>
+      <if test="record.shiftName != null">
+        shift_name = #{record.shiftName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.startHourTime != null">
+        start_hour_time = #{record.startHourTime,jdbcType=INTEGER},
+      </if>
+      <if test="record.startMinuteTime != null">
+        start_minute_time = #{record.startMinuteTime,jdbcType=INTEGER},
+      </if>
+      <if test="record.endHourTime != null">
+        end_hour_time = #{record.endHourTime,jdbcType=INTEGER},
+      </if>
+      <if test="record.endMinuteTime != null">
+        end_minute_time = #{record.endMinuteTime,jdbcType=INTEGER},
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id = #{record.createUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.state != null">
+        state = #{record.state,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update sys_shift
+    set shift_id = #{record.shiftId,jdbcType=INTEGER},
+      shift_name = #{record.shiftName,jdbcType=VARCHAR},
+      start_hour_time = #{record.startHourTime,jdbcType=INTEGER},
+      start_minute_time = #{record.startMinuteTime,jdbcType=INTEGER},
+      end_hour_time = #{record.endHourTime,jdbcType=INTEGER},
+      end_minute_time = #{record.endMinuteTime,jdbcType=INTEGER},
+      create_user_id = #{record.createUserId,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      state = #{record.state,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yxysoft.basic.model.SysShift">
+    update sys_shift
+    <set>
+      <if test="shiftName != null">
+        shift_name = #{shiftName,jdbcType=VARCHAR},
+      </if>
+      <if test="startHourTime != null">
+        start_hour_time = #{startHourTime,jdbcType=INTEGER},
+      </if>
+      <if test="startMinuteTime != null">
+        start_minute_time = #{startMinuteTime,jdbcType=INTEGER},
+      </if>
+      <if test="endHourTime != null">
+        end_hour_time = #{endHourTime,jdbcType=INTEGER},
+      </if>
+      <if test="endMinuteTime != null">
+        end_minute_time = #{endMinuteTime,jdbcType=INTEGER},
+      </if>
+      <if test="createUserId != null">
+        create_user_id = #{createUserId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
+    </set>
+    where shift_id = #{shiftId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yxysoft.basic.model.SysShift">
+    update sys_shift
+    set shift_name = #{shiftName,jdbcType=VARCHAR},
+      start_hour_time = #{startHourTime,jdbcType=INTEGER},
+      start_minute_time = #{startMinuteTime,jdbcType=INTEGER},
+      end_hour_time = #{endHourTime,jdbcType=INTEGER},
+      end_minute_time = #{endMinuteTime,jdbcType=INTEGER},
+      create_user_id = #{createUserId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=INTEGER}
+    where shift_id = #{shiftId,jdbcType=INTEGER}
+  </update>
+  
+  <!-- ================================================================== -->
+  <select id="queryShiftList" parameterType="String" resultMap="resultListMap">
+    SELECT
+    o.`create_time`,
+    shift_id,
+    shift_name,
+    o.create_user_id,
+    `start_hour_time`,
+    `start_minute_time`,
+    `end_hour_time`,
+    `end_minute_time`,
+     o.state,
+    `administrator_name`,
+    `administrator_code`
+    FROM sys_shift o
+    LEFT JOIN sys_administrator u ON u.administrator_id=o.create_user_id
+
+    <where>
+			 <if test="_parameter != '' ">
+				shift_name =#{shiftName}
+			</if> 
+    </where>
+  </select>
+
+  <update id="deleteshiftinfo" parameterType="Integer">
+    update sys_shift  SET state = 2 where shift_id=#{shiftId}
+  </update>
+
+  <!--<select id="selectshiftinfo" parameterType="String" resultMap="BaseResultMap">-->
+    <!--select * from sys_user-->
+    <!--<where>-->
+      <!--<if test="_parameter != null ">-->
+        <!--card_no =#{card_no}-->
+      <!--</if>-->
+    <!--</where>-->
+  <!--</select>-->
+
+  <select id="shiftList" parameterType="java.lang.Integer" resultMap="resultListMap">
+    select * from sys_shift  o join sys_administrator u on u.administrator_id=o.create_user_id
+    where shift_id = #{shiftId,jdbcType=INTEGER}
+  </select>
+
+  <!--添加时查询是否有重复-->
+<select id="selectshiftinfo" resultType="com.yxysoft.basic.model.SysShift">
+
+  select * FROM sys_shift WHERE start_hour_time=#{startHourTime}
+  and  start_minute_time=#{startMinuteTime}
+  and   end_hour_time=#{endHourTime}
+  and   end_minute_time=#{endMinuteTime}
+
+</select>
+
+  <select id="selectallshiftinfo" resultMap="BaseResultMap">
+    select * FROM sys_shift
+  </select>
+
+
+
+
+  <resultMap type="com.yxysoft.basic.model.SysShift" id="resultListMap">
+    <result column="shift_id" property="shiftId"/>
+    <result column="shift_name" property="shiftName"/>
+    <result column="start_hour_time" property="startHourTime"/>
+    <result column="start_minute_time" property="startMinuteTime"/>
+    <result column="end_hour_time" property="endHourTime"/>
+    <result column="end_minute_time" property="endMinuteTime"/>
+    <result column="create_user_id" property="createUserId"/>
+    <result column="create_time" property="createTime"/>
+    <result column="state" property="state"/>
+
+    <collection property="sysAdministrator" ofType="com.yxysoft.basic.model.SysAdministrator">
+      <result column="administrator_id" property="administratorId"/>
+      <result column="administrator_name" property="administratorName"/>
+      <result column="administrator_code" property="administratorCode"/>
+
+      <!--<association property="sysAdministrator" javaType="com.yxysoft.basic.model.SysAdministrator">-->
+        <!--<result column="administrator_id" property="administratorId"/>-->
+        <!--<result column="administrator_name" property="administratorName"/>-->
+
+      <!--</association>-->
+    </collection>
+
+
+  </resultMap>
+  
+</mapper>

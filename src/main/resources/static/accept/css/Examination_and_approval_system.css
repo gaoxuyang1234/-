@@ -1,0 +1,38 @@
+body{min-width:1024px; background-image: url(../images/lattice.png); text-align: center;}
+
+ul{padding: 10px; margin: 0;}
+ul li{list-style:none; margin-bottom:10px;}
+ul li input{width: 100%; height: 40px; border-radius:5px;}
+ul li input:focus{outline: 0}
+button{background:#00adff; color:#fff; border: none; border-radius: 5px;padding: 10px;}
+
+.Examination_and_approval_system{width: 400px; margin: 0 auto; margin-top: 5%;}
+
+
+.Examination_and_approval_system_one{ height: 165px;}
+
+.National_Emblem{ width: 100%; float: left; }
+.National_Emblem img{width: 100px;margin-bottom: 10px;}
+
+.title{font-size: 26px; color: #fff; display: block;}
+
+
+.Examination_and_approval_system_two{background: #fff; border-radius: 5px;}
+
+.Verification_Code{height: 50px;}
+.Verification_Code input{width: 66%; float: left;}
+.Verification_Code canvas{border: 1px solid #ddd; float: right;}
+.Verification_Code a {font-size: 8px;}
+
+.Remember_the_password{}
+.Remember_the_password input{ float: left; width: 4%; }
+.Remember_the_password span{ display: block; float: left;width: 88%; text-align: left; margin: 10px; }
+
+.Sign_in{ width: 100%;  font-size: 18px; letter-spacing:30px; }
+
+.footer {
+	color:#fff;
+	margin-top: 100px;
+}
+
+

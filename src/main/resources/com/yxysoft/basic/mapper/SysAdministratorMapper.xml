@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxysoft.basic.mapper.SysAdministratorMapper">
+  <resultMap id="BaseResultMap" type="com.yxysoft.basic.model.SysAdministrator">
+    <constructor>
+      <idArg column="administrator_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="administrator_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="administrator_code" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="department" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="create_user_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="state" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="dep_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    administrator_id, administrator_name, administrator_code, department, create_user_id, 
+    create_time, state, dep_id
+  </sql>
+  <select id="selectByExample" parameterType="com.yxysoft.basic.model.SysAdministratorExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_administrator
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_administrator
+    where administrator_id = #{administratorId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_administrator
+    where administrator_id = #{administratorId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.yxysoft.basic.model.SysAdministratorExample">
+    delete from sys_administrator
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.yxysoft.basic.model.SysAdministrator">
+    <selectKey keyProperty="administratorId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_administrator (administrator_name, administrator_code, 
+      department, create_user_id, create_time, 
+      state, dep_id)
+    values (#{administratorName,jdbcType=VARCHAR}, #{administratorCode,jdbcType=VARCHAR}, 
+      #{department,jdbcType=VARCHAR}, #{createUserId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{state,jdbcType=INTEGER}, #{depId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yxysoft.basic.model.SysAdministrator">
+    <selectKey keyProperty="administratorId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_administrator
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="administratorName != null">
+        administrator_name,
+      </if>
+      <if test="administratorCode != null">
+        administrator_code,
+      </if>
+      <if test="department != null">
+        department,
+      </if>
+      <if test="createUserId != null">
+        create_user_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="depId != null">
+        dep_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="administratorName != null">
+        #{administratorName,jdbcType=VARCHAR},
+      </if>
+      <if test="administratorCode != null">
+        #{administratorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null">
+        #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserId != null">
+        #{createUserId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="depId != null">
+        #{depId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.yxysoft.basic.model.SysAdministratorExample" resultType="java.lang.Long">
+    select count(*) from sys_administrator
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update sys_administrator
+    <set>
+      <if test="record.administratorId != null">
+        administrator_id = #{record.administratorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.administratorName != null">
+        administrator_name = #{record.administratorName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.administratorCode != null">
+        administrator_code = #{record.administratorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.department != null">
+        department = #{record.department,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createUserId != null">
+        create_user_id = #{record.createUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.state != null">
+        state = #{record.state,jdbcType=INTEGER},
+      </if>
+      <if test="record.depId != null">
+        dep_id = #{record.depId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update sys_administrator
+    set administrator_id = #{record.administratorId,jdbcType=INTEGER},
+      administrator_name = #{record.administratorName,jdbcType=VARCHAR},
+      administrator_code = #{record.administratorCode,jdbcType=VARCHAR},
+      department = #{record.department,jdbcType=VARCHAR},
+      create_user_id = #{record.createUserId,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      state = #{record.state,jdbcType=INTEGER},
+      dep_id = #{record.depId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yxysoft.basic.model.SysAdministrator">
+    update sys_administrator
+    <set>
+      <if test="administratorName != null">
+        administrator_name = #{administratorName,jdbcType=VARCHAR},
+      </if>
+      <if test="administratorCode != null">
+        administrator_code = #{administratorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null">
+        department = #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserId != null">
+        create_user_id = #{createUserId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="depId != null">
+        dep_id = #{depId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where administrator_id = #{administratorId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yxysoft.basic.model.SysAdministrator">
+    update sys_administrator
+    set administrator_name = #{administratorName,jdbcType=VARCHAR},
+      administrator_code = #{administratorCode,jdbcType=VARCHAR},
+      department = #{department,jdbcType=VARCHAR},
+      create_user_id = #{createUserId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=INTEGER},
+      dep_id = #{depId,jdbcType=INTEGER}
+    where administrator_id = #{administratorId,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="selectalladminfo" resultMap="BaseResultMap">
+      select *FROM  sys_administrator
+
+  </select>
+</mapper>

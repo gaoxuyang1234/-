@@ -1,0 +1,335 @@
+/*媒体查询 自适应字体大小*/
+@media only screen and (min-width: 320px){
+	html{
+		font-size: 62.5% !important;
+	}
+}
+@media only screen and (min-width: 640px){
+	html {
+	    font-size: 100% !important;
+	}
+}
+@media only screen and (min-width: 750px){
+	html {
+	    font-size: 110% !important;
+	}
+}
+@media only screen and (min-width: 1242px){
+	html {
+	    font-size: 130% !important;
+	}
+}
+/*----------公共样式--------------------*/
+*{
+	font-family: "微软雅黑 Bold", "微软雅黑 Regular", "微软雅黑";
+}
+body{
+	font-size: 16px;
+	font-size: 1.6rem;
+}
+.noclick{
+	background: #bbb;
+}
+.click{
+	background: #12B7F5;
+}
+.finish{
+	background: #70db70 !important;
+}
+.warning{
+	background: red !important;
+}
+
+/*-----------------登录页面样式-----------------*/
+header{
+	position: fixed !important;
+	z-index: 10;
+	top: 0;
+}
+header p{
+	height: 5rem;
+	line-height: 5rem;
+	text-align: center;
+	color: #fff;
+	margin: 0;
+	font-size: 1.8rem;
+	background: #12b7f5;
+}
+.banner{
+	margin-top: 5rem;
+}
+/*输入表单*/
+.login-user p{
+	height: 4rem;
+	line-height: 4rem;
+	display: flex;
+	margin: 1rem 2%;
+}
+.login-user input{
+	height: 4rem;
+	border: 1px solid #bbb;
+	border-radius: 5px;
+}
+
+.login-user span{
+	display: block;
+	width: 30%;
+	text-align: right;
+}
+.longinput{
+	width: 66%;
+}
+.shortinput{
+	width: 32%;
+}
+.yzmbtn{
+	margin-left: 2%;
+	color: #fff;
+}
+.login-in{
+	background: #12b7f5 ;
+	margin: 1rem 15%;
+	width: 70%;
+	color: #fff;
+}
+/*------------------首页样式----------------*/
+.signin-state{
+	width: 84%;
+	margin: 7rem 8% 0;
+	overflow: hidden;
+}
+.circle{
+	width: 13rem;
+	height: 13rem;
+	border: 1px solid #bbb;
+	border-radius: 50%;
+}
+.signin{
+	float: left;
+	background: #ffd84c;
+	text-align: center;
+}
+.signin-state h4{
+	margin: 4rem 0 0 0;
+	font-size: 1.8rem;
+}.signin-state p{
+	margin: 1rem 0 0 0;
+}
+.signout{
+	float: right;
+	background:#ffd84c ;
+	text-align: center;
+}
+.index-option{
+	margin-top: 3rem;
+	border-top: 1px solid;
+}
+.index-option a{
+	display: block;
+	width: 90%;
+	background: #b2fb82;
+	height: 5rem;
+	line-height: 5rem;
+	text-align: center;
+	border-radius: 5px;
+	margin: 2rem 5% 0;
+	position: relative;
+}
+.index-option a img{
+	width: 5rem;
+	height: 5rem;
+	position: absolute;
+	left: 0;
+}
+/*-----------------签到样式----------------*/
+.signin-info{
+	width: 80%;
+	margin: 7rem 10% 0 ;
+}
+.signin-info p label{
+	font-weight: normal;
+}
+.signin-info input[type=file]{
+	display: inline-block;
+}
+.signin-info textarea{
+	width: 80%;
+	height: 10rem;
+	border: 1px solid #bbb;
+}
+.signin-info select{
+	height: 3rem;
+}
+
+button{
+	display: block;
+	width: 80%;
+	height: 4rem;
+	margin: 2rem 10% 0;
+	background: #bbb;
+	color: #fff;
+}
+/*------------签退样式----------------*/
+.signout-info{
+	margin: 6rem 2% 0 2%;
+	width: 96%;
+	display: flex;
+	border-bottom: 1px solid #bbb;
+}
+.no-signin{
+	margin: 8rem 2% 0 2%;
+	width: 96%;
+	text-align: center;
+	border-bottom: 1px solid #bbb;
+	padding-bottom: 5rem;
+}
+.no-signin input{
+	width: 50%;
+	height: 4rem;
+}
+.signout-title{
+	font-weight: bold;
+}
+.signout-record-l{
+	width: 45%;
+}
+.signout-record-r{
+	margin-left: 3%;
+	font-size: 14px;
+	font-size: 1.4rem;
+}
+.signout-record-r p,.signout-option p{
+	margin: 1rem 0;
+}
+.signout-option{
+	width: 96%;
+	margin: 1rem 2% 0;
+}
+.signout-option label{
+	font-weight: normal;
+}
+.signout-option textarea{
+	width: 80%;
+	height: 10rem;
+	border: 1px solid #bbb;
+}
+.signout-option select{
+	height: 3rem;
+}
+
+/*-------------详情样式---------------*/
+.mumber-info{
+	width: 90%;
+	margin: 7rem 5% 0;
+	padding-bottom: 3rem;
+	overflow: hidden;
+	border-bottom: 1px solid #bbb;
+}
+.mumber-info img,.name-department{
+	float: left;
+}
+.name-department{
+	margin-left: 2%;
+}
+.res-date{
+	float: right;
+}
+.work-date{
+	width: 90%;
+	margin: 2rem 5% 0;
+	display: flex;
+}
+.work-left,.work-right{
+	width: 50%;
+}
+.work-date-option{
+	overflow: hidden;
+	margin: 1rem 0;
+}
+.work-left{
+	border-right:1px solid #bbb;
+}
+.work-right{
+	margin-left: 1rem;
+}
+.work-date img{
+	float: left;
+}
+.work-date p{
+	float: left;
+	line-height: 40px;
+	margin: 0 0 0 0.5rem;
+}
+.work-date span{
+	float: right;
+	line-height: 40px;
+	margin-right: 1rem;
+}
+.record{
+	width: 90%;
+	margin: 0.5rem 5% 0;
+	border-top: 1px solid #bbb;
+}
+.record-option{
+	margin-top: 1rem;
+	line-height: 4rem;
+	height:4rem ;
+	text-align: center;
+	background: #ffa385;
+}
+.record-day{
+	margin-top: 0.5rem;
+}
+.record-day p{
+	margin: 0.1rem 0 0;
+	height: 2.5rem;
+	text-align: center;
+	background: #ADEBFF;
+}
+/*------------补卡样式--------------*/
+.card-con{
+	margin: 7rem 0 0;
+	
+}
+.card-con b{
+	font-weight: normal;
+}
+.card-con select,.card-con input[type=text],.card-con textarea{
+	width: 55%;
+	border: 1px solid #bbb;
+	height: 3rem;
+}
+.card-con textarea{
+	height: 8rem !important;
+}
+.card-con p{
+	display: flex;
+	margin: 2.5rem 0;
+	/*background-image: -webkit-linear-gradient( #84e6fe, #ebf1f3);
+    background-image: -o-linear-gradient( #84e6fe, #ebf1f3);
+    background-image: linear-gradient( #84e6fe, #ebf1f3);*/
+}
+.bg{
+	background-image: -webkit-linear-gradient( #84e6fe, #ebf1f3);
+    background-image: -o-linear-gradient( #84e6fe, #ebf1f3);
+    background-image: linear-gradient( #84e6fe, #ebf1f3);
+}
+.times{
+	margin-left: 2rem !important;
+}
+.card-con span{
+	display: block;
+	width: 30%;
+	text-align: right;
+}
+.upload{
+	line-height: 6rem;
+}
+/*------------请假------------*/
+.leave-reason{
+	width: 55%;
+	height: 10rem;
+}
+.card-con input[type=date]{
+	width: 55%;
+}

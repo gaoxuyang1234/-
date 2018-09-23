@@ -1,0 +1,646 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxysoft.basic.mapper.SysPunchInMapper">
+  <resultMap id="BaseResultMap" type="com.yxysoft.basic.model.SysPunchIn">
+    <constructor>
+      <idArg column="punch_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="user_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="punch_start_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="punch_place" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="picture_path" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="punch_reason" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="punch_end_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="sign_back_place" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="sign_back_path" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="sign_back_reason" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="shift_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="punch_state" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="state" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="sign_back_state" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="sign_in_state" javaType="java.lang.Integer" jdbcType="INTEGER" />
+    </constructor>
+  </resultMap>
+      <!-- 结果映射 -->
+    <resultMap type="com.yxysoft.basic.model.SysPunchIn" id="resultListMap" >
+        <!--column指向数据库列名   property指向pojo对象中字段名-->
+    	<result column="punch_id" property="punchId"/>
+    	<result column="user_id" property="userId"/>
+    	<result column="punch_start_time" property="punchStartTime"/>     
+    	<result column="punch_place" property="punchPlace"/>
+    	<result column="punch_reason" property="punchReason"/>
+    	<result column="picture_path" property="picturePath"/>
+    	<result column="shift_name" property="shiftName"/>	
+    	<result column="state" property="state"/>	
+    	<result column="picture_path" property="picturePath"/>	
+    	<result column="sign_back_place" property="signBackPlace"/>	
+    	<result column="sign_back_reason" property="signBackReason"/>	
+    	<result column="punch_end_time" property="punchEndTime"/>	
+    	<result column="sign_back_path" property="signBackPath"/>	
+    	<result column="punch_state" property="punchState"/>	
+    	<result column="create_time" property="createTime"/>	
+    	<result column="sign_back_state" property="signBackState"/>	
+    	<result column="sign_in_state" property="signInState"/>	
+    	<!--property指的是在bean中字段名 ofType类的全定向名  -->
+    	<collection property="sysUser" ofType="com.yxysoft.basic.model.SysUser">
+    		<result column="user_name" property="userName"/>
+    		<result column="user_code" property="userCode"/>
+    		<result column="department" property="department"/>
+    		<result column="user_id" property="userId"/>
+    		<result column="card_no" property="cardNo"/>
+    		
+    		<result column="mobile" property="mobile"/>
+    		<result column="openid" property="openid"/>
+    		<result column="unionid" property="unionid"/>
+    		<result column="create_user_id" property="createUserId"/>
+    		<result column="create_time" property="createTime"/>
+    		<result column="state" property="state"/>
+    		
+    		<result column="dep_id" property="depId"/>
+    		
+    	
+    		
+    	</collection> 
+    </resultMap>
+    
+
+
+      
+  
+  
+  
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    punch_id, user_id, punch_start_time, punch_place, picture_path, punch_reason, punch_end_time, 
+    sign_back_place, sign_back_path, sign_back_reason, shift_name, punch_state, create_time, 
+    state, sign_back_state, sign_in_state
+  </sql>
+  <select id="selectByExample" parameterType="com.yxysoft.basic.model.SysPunchInExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_punch_in
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_punch_in
+    where punch_id = #{punchId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_punch_in
+    where punch_id = #{punchId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.yxysoft.basic.model.SysPunchInExample">
+    delete from sys_punch_in
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.yxysoft.basic.model.SysPunchIn">
+    <selectKey keyProperty="punchId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_punch_in (user_id, punch_start_time, punch_place, 
+      picture_path, punch_reason, punch_end_time, 
+      sign_back_place, sign_back_path, sign_back_reason, 
+      shift_name, punch_state, create_time, 
+      state, sign_back_state, sign_in_state
+      )
+    values (#{userId,jdbcType=INTEGER}, #{punchStartTime,jdbcType=TIMESTAMP}, #{punchPlace,jdbcType=VARCHAR}, 
+      #{picturePath,jdbcType=VARCHAR}, #{punchReason,jdbcType=VARCHAR}, #{punchEndTime,jdbcType=TIMESTAMP}, 
+      #{signBackPlace,jdbcType=VARCHAR}, #{signBackPath,jdbcType=VARCHAR}, #{signBackReason,jdbcType=VARCHAR}, 
+      #{shiftName,jdbcType=VARCHAR}, #{punchState,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{state,jdbcType=INTEGER}, #{signBackState,jdbcType=INTEGER}, #{signInState,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yxysoft.basic.model.SysPunchIn">
+    <selectKey keyProperty="punchId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_punch_in
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="punchStartTime != null">
+        punch_start_time,
+      </if>
+      <if test="punchPlace != null">
+        punch_place,
+      </if>
+      <if test="picturePath != null">
+        picture_path,
+      </if>
+      <if test="punchReason != null">
+        punch_reason,
+      </if>
+      <if test="punchEndTime != null">
+        punch_end_time,
+      </if>
+      <if test="signBackPlace != null">
+        sign_back_place,
+      </if>
+      <if test="signBackPath != null">
+        sign_back_path,
+      </if>
+      <if test="signBackReason != null">
+        sign_back_reason,
+      </if>
+      <if test="shiftName != null">
+        shift_name,
+      </if>
+      <if test="punchState != null">
+        punch_state,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="signBackState != null">
+        sign_back_state,
+      </if>
+      <if test="signInState != null">
+        sign_in_state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="punchStartTime != null">
+        #{punchStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="punchPlace != null">
+        #{punchPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="picturePath != null">
+        #{picturePath,jdbcType=VARCHAR},
+      </if>
+      <if test="punchReason != null">
+        #{punchReason,jdbcType=VARCHAR},
+      </if>
+      <if test="punchEndTime != null">
+        #{punchEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="signBackPlace != null">
+        #{signBackPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="signBackPath != null">
+        #{signBackPath,jdbcType=VARCHAR},
+      </if>
+      <if test="signBackReason != null">
+        #{signBackReason,jdbcType=VARCHAR},
+      </if>
+      <if test="shiftName != null">
+        #{shiftName,jdbcType=VARCHAR},
+      </if>
+      <if test="punchState != null">
+        #{punchState,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="signBackState != null">
+        #{signBackState,jdbcType=INTEGER},
+      </if>
+      <if test="signInState != null">
+        #{signInState,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <select id="countByExample" parameterType="com.yxysoft.basic.model.SysPunchInExample" resultType="java.lang.Long">
+    select count(*) from sys_punch_in
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+  
+  <update id="updateByExampleSelective" parameterType="map">
+    update sys_punch_in
+    <set>
+      <if test="record.punchId != null">
+        punch_id = #{record.punchId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.punchStartTime != null">
+        punch_start_time = #{record.punchStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.punchPlace != null">
+        punch_place = #{record.punchPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="record.picturePath != null">
+        picture_path = #{record.picturePath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.punchReason != null">
+        punch_reason = #{record.punchReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.punchEndTime != null">
+        punch_end_time = #{record.punchEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.signBackPlace != null">
+        sign_back_place = #{record.signBackPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="record.signBackPath != null">
+        sign_back_path = #{record.signBackPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.signBackReason != null">
+        sign_back_reason = #{record.signBackReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shiftName != null">
+        shift_name = #{record.shiftName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.punchState != null">
+        punch_state = #{record.punchState,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.state != null">
+        state = #{record.state,jdbcType=INTEGER},
+      </if>
+      <if test="record.signBackState != null">
+        sign_back_state = #{record.signBackState,jdbcType=INTEGER},
+      </if>
+      <if test="record.signInState != null">
+        sign_in_state = #{record.signInState,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update sys_punch_in
+    set punch_id = #{record.punchId,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      punch_start_time = #{record.punchStartTime,jdbcType=TIMESTAMP},
+      punch_place = #{record.punchPlace,jdbcType=VARCHAR},
+      picture_path = #{record.picturePath,jdbcType=VARCHAR},
+      punch_reason = #{record.punchReason,jdbcType=VARCHAR},
+      punch_end_time = #{record.punchEndTime,jdbcType=TIMESTAMP},
+      sign_back_place = #{record.signBackPlace,jdbcType=VARCHAR},
+      sign_back_path = #{record.signBackPath,jdbcType=VARCHAR},
+      sign_back_reason = #{record.signBackReason,jdbcType=VARCHAR},
+      shift_name = #{record.shiftName,jdbcType=VARCHAR},
+      punch_state = #{record.punchState,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      state = #{record.state,jdbcType=INTEGER},
+      sign_back_state = #{record.signBackState,jdbcType=INTEGER},
+      sign_in_state = #{record.signInState,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yxysoft.basic.model.SysPunchIn">
+    update sys_punch_in
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="punchStartTime != null">
+        punch_start_time = #{punchStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="punchPlace != null">
+        punch_place = #{punchPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="picturePath != null">
+        picture_path = #{picturePath,jdbcType=VARCHAR},
+      </if>
+      <if test="punchReason != null">
+        punch_reason = #{punchReason,jdbcType=VARCHAR},
+      </if>
+      <if test="punchEndTime != null">
+        punch_end_time = #{punchEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="signBackPlace != null">
+        sign_back_place = #{signBackPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="signBackPath != null">
+        sign_back_path = #{signBackPath,jdbcType=VARCHAR},
+      </if>
+      <if test="signBackReason != null">
+        sign_back_reason = #{signBackReason,jdbcType=VARCHAR},
+      </if>
+      <if test="shiftName != null">
+        shift_name = #{shiftName,jdbcType=VARCHAR},
+      </if>
+      <if test="punchState != null">
+        punch_state = #{punchState,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="signBackState != null">
+        sign_back_state = #{signBackState,jdbcType=INTEGER},
+      </if>
+      <if test="signInState != null">
+        sign_in_state = #{signInState,jdbcType=INTEGER},
+      </if>
+    </set>
+    where punch_id = #{punchId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yxysoft.basic.model.SysPunchIn">
+    update sys_punch_in
+    set user_id = #{userId,jdbcType=INTEGER},
+      punch_start_time = #{punchStartTime,jdbcType=TIMESTAMP},
+      punch_place = #{punchPlace,jdbcType=VARCHAR},
+      picture_path = #{picturePath,jdbcType=VARCHAR},
+      punch_reason = #{punchReason,jdbcType=VARCHAR},
+      punch_end_time = #{punchEndTime,jdbcType=TIMESTAMP},
+      sign_back_place = #{signBackPlace,jdbcType=VARCHAR},
+      sign_back_path = #{signBackPath,jdbcType=VARCHAR},
+      sign_back_reason = #{signBackReason,jdbcType=VARCHAR},
+      shift_name = #{shiftName,jdbcType=VARCHAR},
+      punch_state = #{punchState,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=INTEGER},
+      sign_back_state = #{signBackState,jdbcType=INTEGER},
+      sign_in_state = #{signInState,jdbcType=INTEGER}
+    where punch_id = #{punchId,jdbcType=INTEGER}
+  </update>
+
+  <!--  通过Query 数据    判断显示的数据 --><!-- 多表关联 -->
+  <select id="querypunchlist" parameterType="com.yxysoft.basic.model.QueryVo" resultMap="resultListMap">
+    select
+    *
+    from
+    sys_punch_in p
+    join sys_user u  on p.user_id=u.user_id
+    <where>
+      <!--  用户名字  在用户表中的 -->
+      <if test="username != null and username != ''">
+        u.user_name  like "%"#{username}"%"
+      </if>
+      <!-- 用户工号    在用户表中-->
+      <if test="usercode != null and usercode != ''">
+        and  u.user_code like '%${usercode}%'
+      </if>
+
+
+      <!--时间段  -->
+      <if test="beginDate != null and beginDate != ''">
+        AND p.create_time <![CDATA[>=]]> #{beginDate}
+      </if>
+      <if test="endDate != null and endDate != ''">
+        AND p.create_time <![CDATA[<=]]>#{endDate}
+      </if>
+
+
+
+
+      <if test="shijian == 1 ">
+        and to_days(punch_start_time) = to_days(now())
+      </if>
+
+      <if test="shijian ==2 ">
+        and  <![CDATA[ TO_DAYS( NOW( ) ) - TO_DAYS( punch_start_time) <= 1 ]]>
+      </if>
+
+      <if test="shijian == 3 ">
+        and YEARWEEK(date_format(punch_start_time,'%Y-%m-%d')) = YEARWEEK(now())
+      </if>
+
+
+      <if test="shijian == 4 ">
+        and YEARWEEK(date_format(punch_start_time,'%Y-%m-%d')) = YEARWEEK(now())-1
+      </if>
+      <if test="shijian == 5 ">
+        and DATE_FORMAT( punch_start_time, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )
+      </if>
+
+      <if test="shijian == 6 ">
+        and   PERIOD_DIFF( date_format( now( ) , '%Y%m' ) , date_format( punch_start_time, '%Y%m' ) ) =1
+      </if>
+    </where>
+  </select>
+
+
+<!-- 主页面gxy -->
+  <select id="list"   resultMap="BaseResultMap">
+    select * from sys_punch_in 
+    
+<where>
+       <if test="pid != null">
+         user_id = #{pid}
+      </if>
+      <if test="datetime!= null">
+        and  create_time LIKE '%${datetime}%'
+      </if>  
+</where>  
+</select>
+
+<!-- 修改的update -->
+ <update id="updateByPrimaryKeySelective1" >
+    update sys_punch_in
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <!-- <if test="punchStartTime != null">
+        punch_start_time = #{punchStartTime,jdbcType=TIMESTAMP},
+      </if> -->
+      <!-- <if test="punchPlace != null">
+        punch_place = #{punchPlace,jdbcType=VARCHAR},
+      </if> -->
+      <!-- <if test="picturePath != null">
+        picture_path = #{picturePath,jdbcType=VARCHAR},
+      </if> -->
+      <!-- <if test="punchReason != null">
+        punch_reason = #{punchReason,jdbcType=VARCHAR},
+      </if> -->
+      <if test="punchEndTime != null">
+        punch_end_time = #{punchEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="signBackPlace != null">
+        sign_back_place = #{signBackPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="signBackPath != null">
+        sign_back_path = #{signBackPath,jdbcType=VARCHAR},
+      </if>
+      <if test="signBackReason != null">
+        sign_back_reason = #{signBackReason,jdbcType=VARCHAR},
+      </if>
+      
+      <!-- <if test="punchState != null">
+        punch_state = #{punchState,jdbcType=VARCHAR},
+      </if> -->
+      <!-- <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if> -->
+      <!-- <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if> -->
+      <if test="signBackState != null">
+        sign_back_state = #{signBackState,jdbcType=INTEGER},
+      </if>
+      <!-- <if test="signInState != null">
+        sign_in_state = #{signInState,jdbcType=INTEGER},
+      </if> -->
+    </set>
+    where punch_id = #{punchId,jdbcType=INTEGER}
+  </update>
+
+<!-- ==================================================================== -->
+  <select id="user_cardin"  resultType="com.yxysoft.basic.model.SysPunchIn">
+    select * from sys_punch_in a
+    
+<where>
+     TO_DAYS(punch_start_time) = TO_DAYS(NOW())
+
+       <if test="pid != null">
+       and  user_id = #{pid}
+      </if>
+        
+</where>  
+  </select>
+
+
+   <select id="user_cardon" resultType="com.yxysoft.basic.model.SysPunchIn">
+    select * from sys_punch_in a
+    <where>
+    
+          TO_DAYS(punch_start_time) = TO_DAYS(NOW())
+      <if test="pid != null">
+        and  user_id = #{pid}
+      </if>
+     
+   </where>
+  </select>
+  
+  
+  <!-- 回显 -->
+  <select id="selecthuixian" parameterType="com.yxysoft.basic.model.QueryVo" resultMap="resultListMap">
+
+    select
+    *
+    from
+    sys_punch_in p
+    join sys_user u  on p.user_id=u.user_id
+    where punch_id = #{punchId,jdbcType=INTEGER}
+
+  </select>
+ 
+  <select id="pinfo" resultMap="BaseResultMap">
+    select * FROM  sys_punch_in WHERE  user_id=#{userId}
+  </select>
+
+  <select id="syscount" resultType="java.lang.Integer">
+    SELECT * FROM sys_punch_in WHERE MONTH(create_time)=#{sysmonth} AND  YEAR(create_time)=#{sysyear} AND user_id=#{uid}
+
+  </select>
+
+  <select id="sysnorcount" resultType="java.lang.Integer">
+    SELECT * FROM sys_punch_in WHERE MONTH(create_time)=#{sysmonth} AND  YEAR(create_time)=#{sysyear} AND user_id=#{uid}
+    AND  sign_back_state=1 AND sign_in_state=1
+  </select>
+
+  <select id="sysleavecount" resultMap="BaseResultMap">
+    SELECT * FROM sys_punch_in WHERE MONTH(create_time)=#{sysmonth} AND  YEAR(create_time)=#{sysyear} AND user_id=#{uid}
+    AND punch_state='1'
+  </select>
+
+<!-- gxy改 -->
+  <select id="syscdcount" resultMap="BaseResultMap">
+    SELECT * FROM sys_punch_in WHERE MONTH(create_time)=#{sysmonth} AND  YEAR(create_time)=#{sysyear} AND user_id=#{uid}
+    AND sign_in_state='2'
+  </select>
+<!-- gxy改 -->
+  <select id="sysztcount" resultMap="BaseResultMap">
+    SELECT * FROM sys_punch_in WHERE MONTH(create_time)=#{sysmonth} AND  YEAR(create_time)=#{sysyear} AND user_id=#{uid}
+    AND sign_back_state='2'
+  </select>
+
+<!-- gxy改 -->
+  <select id="sysqkcount" resultMap="BaseResultMap">
+    SELECT * FROM sys_punch_in WHERE MONTH(create_time)=#{sysmonth} AND  YEAR(create_time)=#{sysyear} AND user_id=#{uid}
+    AND (sign_back_state is null or sign_in_state is null)
+  </select>
+
+  <select id="kg" resultMap="BaseResultMap">
+    SELECT * FROM sys_punch_in WHERE punch_state='3'
+  </select>
+
+<!-- gxy改  -->
+  <insert id="insertAskLeave" >
+    insert  into sys_punch_in (user_id,create_time,punch_state,state,sign_back_state,sign_in_state) value(#{uid2,jdbcType=VARCHAR},#{createTime,jdbcType=VARCHAR},1,1,1,1)
+    </insert>
+  
+  </mapper>

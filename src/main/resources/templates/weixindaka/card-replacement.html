@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta http-equiv="Content-Type" content="multipart/form-data; charset=utf-8"/>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>补卡 </title>
+
+
+    <meta name="renderer" content="webkit">
+
+    <!-- No Baidu Siteapp-->
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+    <link rel="icon" type="image/png" href="../../static/weixindaka/assets/i/favicon.png">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="../../static/weixindaka/assets/i/app-icon72x72@2x.png">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+    <link rel="apple-touch-icon-precomposed" href="../../static/weixindaka/assets/i/app-icon72x72@2x.png">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="assets/i/app-icon72x72@2x.png">
+    <meta name="msapplication-TileColor" content="#0e90d2">
+
+    <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+    <!--
+    <link rel="canonical" href="http://www.example.com/">
+    -->
+
+    <link rel="stylesheet" href="../../static/weixindaka/assets/css/amazeui.min.css">
+    <link rel="stylesheet" href="../../static/weixindaka/assets/css/app.css">
+
+    <!--自建css样式-->
+    <link rel="stylesheet" type="text/css" href="../../static/weixindaka/css/wechat-signin.css"/>
+</head>
+<body class="bg">
+
+<!--顶部-->
+<header class="am-u-sm-12 am-padding-0 am-margin-0">
+    <p>补卡签到</p>
+</header>
+<!--内容-->
+<section class="card-con">
+    <p class="times">您当前还剩补卡次数:3</p>
+    <p>
+        <span>补卡时间：</span>
+        <select id="riqi">
+            <option value="0">您当前缺卡的日期</option>
+        </select>
+    </p>
+		  <!--  <p> 
+		        <span>班次：</span>
+		        <select id="shift">
+		            <option value="0">----请选择班次----</option>
+		        </select>
+		       </p> -->
+    <p><span>当前地点：</span><b id="locale"></b></p>
+    <p>
+        <span>补卡原因：</span>
+        <textarea placeholder="请输入审批备注" id="cardReason"></textarea>
+
+    </p>
+    <p><span>还可以输入：</span><em id="contentCountLeft" style="color: blue;">30</em>字</p>
+    <form id="upload" method="post" enctype="multipart/form-data">
+    <p>
+        <span class="upload" >请选择图片：</span>
+        <label for="file"><img src="../../static/weixindaka/img/upload-pic.png" width="60rem"></label>
+        <input type="file" id="file" name="" accept="image/*"  style="display: none"/>
+
+    </p>
+        <input type="button" id="fileSubmit"  value="上传" onclick="pictureupload()" />
+    </form>
+    <div id="image" style="">
+        <img src="" width="100%"/>
+    </div>
+</section>
+<button class="click" onclick="addcardinfo()">提交</button>
+
+<!--底部-->
+
+<!--[if lt IE 9]>
+<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+<script src="../../static/weixindaka/assets/js/amazeui.ie8polyfill.min.js"></script>
+<![endif]-->
+
+<!--[if (gte IE 9)|!(IE)]><!-->
+<script src="../../static/weixindaka/assets/js/jquery.min.js"></script>
+<!--<![endif]-->
+<script src="../../static/weixindaka/assets/js/amazeui.min.js"></script>
+<script src="../../static/weixindaka/js/card.js"></script>
+</body>
+</html>
+<script type="text/javascript">
+    //上传图片预览
+    document.getElementById('file').onchange = function () {
+        var imgFile = this.files[0];
+        var fr = new FileReader();
+        fr.onload = function () {
+            document.getElementById('image').getElementsByTagName('img')[0].src = fr.result;
+        };
+        fr.readAsDataURL(imgFile);
+    };
+</script>
+<!--获取当前位置-百度地图api-->
+<script src="http://api.map.baidu.com/api?v=2.0&ak=pv2lfQntHXoYi6vFN4ZRr9scZDltjC6r"></script>
+<script type="text/javascript">
+    //获取当前位置
+    var geolocation = new BMap.Geolocation();
+    geolocation.getCurrentPosition(function (r) {
+        if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+            mk = new BMap.Marker(r.point);
+            getAddress(r.point);
+        } else {
+            alert('failed' + this.getStatus());
+        }
+    });
+    //获取地址信息，设置地址label
+    function getAddress(point) {
+        var gc = new BMap.Geocoder();
+        gc.getLocation(point, function (rs) {
+            var addComp = rs.addressComponents;
+            var address = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber;//获取地址
+            $('#locale').html(address);
+        });
+
+    }
+</script>
+
+
