@@ -2,7 +2,7 @@
 ##启动项
 启动类application.java    因为是springBoot项目\
 服务端 访问路径：http://localhost:8080/adm/manage    没有登陆先这样\
-客户端访问路径：http://localhost:8080/adm/
+客户端访问路径：http://localhost:8080/adm/wxlogin1       \
 ##相关文件的位置
 /attendance/src/main/java/com/yxysoft/basic/controller/   controller层\
 /attendance/src/main/java/com/yxysoft/basic/service/      service层\
